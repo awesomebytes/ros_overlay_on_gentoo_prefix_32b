@@ -115,6 +115,12 @@ RUN echo "# required by dev-python/wxpython-3.0.2.0::gentoo\n\
 # required by ros-kinetic/ros_base (argument)\n\
 >=x11-libs/wxGTK-3.0.4-r1:3.0 tiff" >> $EPREFIX/etc/portage/package.use
 
+# Needed to emerge dev-python/pillow
+# both 5.3.0 & 5.2.0 don't emerge cause of
+# /usr/include/string.h:627:12: fatal error: bits/string.h: No such file or directory
+# #  include <bits/string.h>
+RUN echo ">=dev-python/pillow-5.2.0" >> $EPREFIX/etc/portage/package.mask
+
 # Setup the basic ROS
 RUN $PREFIXED  emerge ros-kinetic/ros_base
 
