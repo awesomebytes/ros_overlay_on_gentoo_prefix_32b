@@ -54,6 +54,24 @@ ENV CHOST i686-pc-linux-gnu
 # Choosing Python 2.7
 RUN $PREFIXED eselect python set 2
 
+# # Needed for dev-perl/TimeDate-2.300.0
+# # as it errors with dodoc failing with
+# # ERROR:root:Failed to copy file: _parsed_options=Namespace(group=-1, mode=420, owner=-1, preserve_timestamps=False), source='ChangeLog', dest_dir='/home/user/gentoo/var/tmp/portage/dev-perl/TimeDate-2.300.0/image/tmp/gentoo/usr/share/doc/TimeDate-2.300.0'
+# # Traceback (most recent call last):
+# #   File "/tmp/gentoo/usr/lib/portage/python2.7/doins.py", line 209, in run
+# #     copyfile(source, dest)
+# #   File "/home/user/gentoo/usr/lib/python2.7/site-packages/portage/util/file_copy/__init__.py", line 30, in _optimized_copyfile
+# #     _file_copy(src_file.fileno(), dst_file.fileno())
+# # OSError: [Errno 1] Operation not permitted
+# RUN echo "dev-perl/TimeDate-2.300.0" >> $EPREFIX/etc/portage/profile/package.provided
+# RUN echo "dev-perl/MailTools-2.190.0" >> $EPREFIX/etc/portage/profile/package.provided
+# RUN echo "dev-perl/Digest-HMAC-1.30.0-r1" >> $EPREFIX/etc/portage/profile/package.provided
+# RUN echo "dev-perl/Authen-SASL-2.160.0-r1" >> $EPREFIX/etc/portage/profile/package.provided
+# RUN echo "dev-perl/Net-SSLeay-1.820.0" >> $EPREFIX/etc/portage/profile/package.provided
+# RUN echo "dev-perl/IO-Socket-SSL-2.52.0" >> $EPREFIX/etc/portage/profile/package.provided
+# RUN echo "dev-perl/Net-SMTP-SSL-1.40.0" >> $EPREFIX/etc/portage/profile/package.provided
+# RUN echo "dev-perl/Module-Build-0.422.400" >> $EPREFIX/etc/portage/profile/package.provided
+
 # Emerging git
 RUN $PREFIXED emerge dev-vcs/git
 
