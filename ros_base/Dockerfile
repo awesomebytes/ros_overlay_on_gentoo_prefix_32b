@@ -46,7 +46,7 @@ RUN bash gentoo/executeonprefix emerge --version
 
 # All commands to run in the Gentoo Prefix environment must
 # be preprended by $PREFIXED
-ENV PREFIXED=linux32 /tmp/gentoo/executeonprefix
+ENV PREFIXED="linux32 /tmp/gentoo/executeonprefix"
 ENV EPREFIX=/tmp/gentoo
 ENV CHOST i686-pc-linux-gnu
 
