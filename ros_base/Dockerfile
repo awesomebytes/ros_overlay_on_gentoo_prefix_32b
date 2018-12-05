@@ -80,6 +80,18 @@ RUN $PREFIXED emerge net-misc/wget
 RUN $PREFIXED emerge net-misc/curl
 RUN $PREFIXED update-ca-certificates
 
+# Needed to emerge dev-python/rosdep on 32b
+RUN echo "# required by dev-python/rosdep-0.13.0::ros-overlay\n\
+# required by dev-python/rosdep (argument)\n\
+=dev-python/catkin_pkg-9999 **\n\
+# required by dev-python/rosdep-0.13.0::ros-overlay\n\
+# required by dev-python/rosdep (argument)\n\
+=dev-python/rosdistro-9999 **\n\
+# required by dev-python/rosdistro-9999::gentoo\n\
+# required by dev-python/rosdep-0.13.0::ros-overlay\n\
+# required by dev-python/rosdep (argument)\n\
+=dev-python/rospkg-9999 **" >> $EPREFIX/etc/portage/package.use
+
 # Make sure rosdep emerges OK
 RUN $PREFIXED emerge dev-python/rosdep
 
