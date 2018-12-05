@@ -86,6 +86,23 @@ RUN $PREFIXED emerge dev-python/rosdep
 # Make sure catkin emerges OK
 RUN $PREFIXED emerge ros-kinetic/catkin
 
+# Needed to emerge ros-kinetic/ros_base
+RUN echo "# required by dev-python/wxpython-3.0.2.0::gentoo\n\
+# required by ros-kinetic/actionlib-1.11.13::ros-overlay\n\
+# required by ros-kinetic/ros_base-1.3.2::ros-overlay\n\
+# required by ros-kinetic/ros_base (argument)\n\
+>=x11-libs/pango-1.42.4 X\n\
+# required by x11-libs/gtk+-3.24.1::gentoo\n\
+# required by x11-themes/adwaita-icon-theme-3.26.1::gentoo\n\
+# required by x11-libs/gtk+-2.24.32-r1::gentoo\n\
+# required by x11-themes/gtk-engines-adwaita-3.22.3::gentoo\n\
+>=x11-libs/cairo-1.16.0-r2 X\n\
+# required by dev-python/wxpython-3.0.2.0::gentoo\n\
+# required by ros-kinetic/actionlib-1.11.13::ros-overlay\n\
+# required by ros-kinetic/ros_base-1.3.2::ros-overlay\n\
+# required by ros-kinetic/ros_base (argument)\n\
+>=x11-libs/wxGTK-3.0.4-r1:3.0 tiff" >> $EPREFIX/etc/portage/package.use
+
 # Setup the basic ROS
 RUN $PREFIXED  emerge ros-kinetic/ros_base
 
