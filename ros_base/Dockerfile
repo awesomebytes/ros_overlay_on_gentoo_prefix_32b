@@ -67,6 +67,10 @@ ros-lunar/* PYTHON_TARGETS: -* python2_7\n\
 ros-lunar/* PYTHON_SINGLE_TARGET: -* python2_7\n\
 " >> $EPREFIX/etc/portage/package.use
 
+# So we dont get complains
+RUN echo "en_US.UTF-8 UTF-8" >> $EPREFIX/etc/locale.gen
+RUN $PREFIXED locale-gen
+
 # # Needed for dev-perl/TimeDate-2.300.0
 # # as it errors with dodoc failing with
 # # ERROR:root:Failed to copy file: _parsed_options=Namespace(group=-1, mode=420, owner=-1, preserve_timestamps=False), source='ChangeLog', dest_dir='/home/user/gentoo/var/tmp/portage/dev-perl/TimeDate-2.300.0/image/tmp/gentoo/usr/share/doc/TimeDate-2.300.0'
