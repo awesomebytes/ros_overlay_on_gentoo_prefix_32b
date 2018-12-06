@@ -92,6 +92,9 @@ RUN $PREFIXED locale-gen
 # Let's make the compilations faster when possible
 # Substitute the default -j2 with -j<NUM_CORES/2>
 RUN sed -i -e 's/j2/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPREFIX/etc/portage/make.conf
+# Add extra jobs if we have enough CPUs
+RUN echo "EMERGE_DEFAULT_OPTS=\"--jobs $((`grep -c \^processor \/proc\/cpuinfo` / 2)) --load-average `grep -c \^processor \/proc\/cpuinfo`\"" >> $EPREFIX/etc/portage/make.conf
+RUN cat $EPREFIX/etc/portage/make.conf
 
 # Emerging git
 RUN $PREFIXED emerge dev-vcs/git
