@@ -148,6 +148,11 @@ RUN echo "# required by ros-kinetic/cpp_common-0.6.11::ros-overlay\n\
 # #  include <bits/string.h>
 RUN echo ">=dev-python/pillow-5.2.0" >> $EPREFIX/etc/portage/package.mask
 
+# Currently there is a bug that wont allow to compile rostime and others:
+# https://github.com/ros/ros-overlay/issues/711
+# Downgrading cmake seems to work it out
+RUN echo ">=dev-util/cmake-3.13.1" >> $EPREFIX/etc/portage/package.mask
+
 # Setup the basic ROS
 RUN $PREFIXED  emerge ros-kinetic/ros_base
 
