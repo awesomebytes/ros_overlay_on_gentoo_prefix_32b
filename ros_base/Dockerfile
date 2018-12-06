@@ -151,7 +151,7 @@ RUN echo ">=dev-python/pillow-5.2.0" >> $EPREFIX/etc/portage/package.mask
 # Currently there is a bug that wont allow to compile rostime and others:
 # https://github.com/ros/ros-overlay/issues/711
 # Downgrading cmake seems to work it out
-RUN echo ">=dev-util/cmake-3.13.1" >> $EPREFIX/etc/portage/package.mask
+RUN echo ">=dev-util/cmake-3.13.0" >> $EPREFIX/etc/portage/package.mask
 
 # Setup the basic ROS
 RUN $PREFIXED  emerge ros-kinetic/ros_base
