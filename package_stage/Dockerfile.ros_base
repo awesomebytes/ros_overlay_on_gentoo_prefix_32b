@@ -1,0 +1,6 @@
+FROM awesomebytes/roogp_ros_kinetic_ros_base
+
+# Create the .tar.gz
+RUN cd /tmp; tar cvzf /tmp/gentoo_on_tmp.tar.gz gentoo
+
+ENTRYPOINT ["/bin/bash"]
