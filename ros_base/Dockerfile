@@ -72,6 +72,10 @@ RUN $PREFIXED eselect python set 2
 # RUN echo "dev-perl/Net-SMTP-SSL-1.40.0" >> $EPREFIX/etc/portage/profile/package.provided
 # RUN echo "dev-perl/Module-Build-0.422.400" >> $EPREFIX/etc/portage/profile/package.provided
 
+# Let's make the compilations faster when possible
+# Substitute the default -j2 with -j<NUM_CORES/2>
+RUN sed -i -e 's/j2/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPREFIX/etc/portage/make.conf
+
 # Emerging git
 RUN $PREFIXED emerge dev-vcs/git
 
