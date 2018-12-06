@@ -187,6 +187,6 @@ RUN echo ">=dev-python/pillow-5.2.0" >> $EPREFIX/etc/portage/package.mask
 RUN $PREFIXED  emerge ros-kinetic/ros_base
 
 # Create the bin packages
-RUN $PREFIXED quickpkg "*/*" --include-config y --include-unmodified-config y
+RUN $PREFIXED quickpkg \"*/*\" --include-config y --include-unmodified-config y
 
 ENTRYPOINT ["/bin/bash"]
