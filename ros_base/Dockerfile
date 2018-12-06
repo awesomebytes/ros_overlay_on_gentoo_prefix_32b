@@ -54,6 +54,19 @@ ENV CHOST i686-pc-linux-gnu
 # Choosing Python 2.7
 RUN $PREFIXED eselect python set 2
 
+# Only emerge for Python 2.7
+# Because of errors like:
+# Issue https://github.com/ros/ros-overlay/issues/715
+RUN echo "# From the Docker image of ros-overlay\n\
+# mainly force to build just Python 2.7\n\
+ros-indigo/* PYTHON_TARGETS: -* python2_7\n\
+ros-indigo/* PYTHON_SINGLE_TARGET: -* python2_7\n\
+ros-kinetic/* PYTHON_TARGETS: -* python2_7\n\
+ros-kinetic/* PYTHON_SINGLE_TARGET: -* python2_7\n\
+ros-lunar/* PYTHON_TARGETS: -* python2_7\n\
+ros-lunar/* PYTHON_SINGLE_TARGET: -* python2_7\n\
+" >> $EPREFIX/etc/portage/package.use
+
 # # Needed for dev-perl/TimeDate-2.300.0
 # # as it errors with dodoc failing with
 # # ERROR:root:Failed to copy file: _parsed_options=Namespace(group=-1, mode=420, owner=-1, preserve_timestamps=False), source='ChangeLog', dest_dir='/home/user/gentoo/var/tmp/portage/dev-perl/TimeDate-2.300.0/image/tmp/gentoo/usr/share/doc/TimeDate-2.300.0'
@@ -162,18 +175,6 @@ RUN echo "# required by ros-kinetic/cpp_common-0.6.11::ros-overlay\n\
 # #  include <bits/string.h>
 RUN echo ">=dev-python/pillow-5.2.0" >> $EPREFIX/etc/portage/package.mask
 
-# Only emerge for Python 2.7
-# Because of errors like:
-# Issue
-RUN echo "# From the Docker image of ros-overlay\n\
-# mainly force to build just Python 2.7\n\
-ros-indigo/* PYTHON_TARGETS: -* python2_7\n\
-ros-indigo/* PYTHON_SINGLE_TARGET: -* python2_7\n\
-ros-kinetic/* PYTHON_TARGETS: -* python2_7\n\
-ros-kinetic/* PYTHON_SINGLE_TARGET: -* python2_7\n\
-ros-lunar/* PYTHON_TARGETS: -* python2_7\n\
-ros-lunar/* PYTHON_SINGLE_TARGET: -* python2_7\n\
-" >> $EPREFIX/etc/portage/package.use
 
 # Setup the basic ROS
 RUN $PREFIXED  emerge ros-kinetic/ros_base
