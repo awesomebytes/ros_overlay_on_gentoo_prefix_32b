@@ -133,6 +133,15 @@ RUN echo "# required by dev-python/wxpython-3.0.2.0::gentoo\n\
 # required by ros-kinetic/ros_base (argument)\n\
 >=x11-libs/wxGTK-3.0.4-r1:3.0 tiff" >> $EPREFIX/etc/portage/package.use
 
+# Also needed to emerge ros-kinetic/ros_base
+RUN echo "# required by ros-kinetic/cpp_common-0.6.11::ros-overlay\n\
+# required by ros-kinetic/topic_tools-1.12.14::ros-overlay\n\
+# required by ros-kinetic/ros_comm-1.12.14::ros-overlay\n\
+# required by ros-kinetic/ros_core-1.3.2::ros-overlay\n\
+# required by ros-kinetic/ros_base-1.3.2::ros-overlay\n\
+# required by ros-kinetic/ros_base (argument)\n\
+=dev-libs/console_bridge-9999 **" >> $EPREFIX/etc/portage/package.accept_keywords
+
 # Needed to emerge dev-python/pillow
 # both 5.3.0 & 5.2.0 don't emerge cause of
 # /usr/include/string.h:627:12: fatal error: bits/string.h: No such file or directory
