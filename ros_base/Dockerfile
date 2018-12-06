@@ -39,7 +39,7 @@ RUN df -h
 # Note that we always use the same one
 RUN aria2c -x 10 https://github.com/awesomebytes/gentoo_prefix_ci_32b/releases/download/release%2F2018-12-05T11at43plus00at00/gentoo_on_tmp-x86_2018-12-05T11at43plus00at00.tar.gz
 
-RUN tar xvf gentoo_on_tmp-*.tar.gz
+RUN tar xvf gentoo_on_tmp-*.tar.gz; rm gentoo_on_tmp-*.tar.gz
 
 # Make sure it works
 RUN bash gentoo/executeonprefix emerge --version
