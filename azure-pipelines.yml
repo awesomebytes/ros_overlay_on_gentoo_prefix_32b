@@ -63,24 +63,24 @@ jobs:
       timeoutInMinutes: 0
       # Even if it fails I want to push the image to DockerHub for inspection
       # continueOnError: true
-    # # Try to tag the latest failed image we ran
-    - script: docker tag `docker ps -a -l -q | xargs docker commit | awk -F":" '{print $2}'` $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)
-      displayName: 'create image to push to DockerHub'
-      condition: failed()
-    # Push it
-    - script: docker push $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)
-      displayName: 'push image to DockerHub'
-    # Tag as :latest too
-    - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
-      displayName: 'tag as latest'
-    # Push as latest
-    - script: docker push $(DockerHub_user)/$(docker_image_name):latest
-      displayName: 'push latest to DockerHub'
+    # # # Try to tag the latest failed image we ran
+    # - script: docker tag `docker ps -a -l -q | xargs docker commit | awk -F":" '{print $2}'` $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)
+    #   displayName: 'create image to push to DockerHub'
+    #   condition: failed()
+    # # Push it
+    # - script: docker push $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)
+    #   displayName: 'push image to DockerHub'
+    # # Tag as :latest too
+    # - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
+    #   displayName: 'tag as latest'
+    # # Push as latest
+    # - script: docker push $(DockerHub_user)/$(docker_image_name):latest
+    #   displayName: 'push latest to DockerHub'
 
     # Create a temporal container to copy the gentoo_on_tmp.tar.gz
     - script: |
         id=$(docker create $(DockerHub_user)/$(docker_image_name))
-        docker cp $id:/home/user/gentoo_on_tmp.tar.gz $HOME
+        docker cp $id:/tmp/gentoo_on_tmp.tar.gz $HOME
       displayName: 'Extract gentoo_on_tmp.tar.gz from Docker image'
     # Not really needed
     # - script: docker rm -v $id
