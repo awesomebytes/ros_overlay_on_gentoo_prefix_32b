@@ -184,7 +184,13 @@ RUN echo ">=dev-python/pillow-5.2.0" >> $EPREFIX/etc/portage/package.mask
 
 
 # Setup the basic ROS
-RUN $PREFIXED  emerge ros-kinetic/ros_base
+RUN $PREFIXED emerge ros-kinetic/ros_base || true
+# Apparently dev-lisp/sbcl-1.4.13 sometimes may fail in some of the tests
+# given the machine is too stressed
+# SB-CONCURRENCY-TEST::MAILBOX.INTERRUPTS-SAFETY.1.
+# So just re-running may fix it
+# (if nothing failed, this will just take a couple of seconds)
+RUN $PREFIXED emerge ros-kinetic/ros_base
 
 # Create the bin packages
 RUN $PREFIXED quickpkg \"*/*\" --include-config y --include-unmodified-config y
