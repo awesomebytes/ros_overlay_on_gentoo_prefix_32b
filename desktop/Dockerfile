@@ -92,6 +92,13 @@ RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/rviz_plugin_tutorials &&\
     cd $EPREFIX/etc/portage/patches/ros-kinetic/rviz_plugin_tutorials &&\
     wget https://gist.githubusercontent.com/awesomebytes/b1cc1490045a568b68dcd618629de405/raw/bbebd2f6a65c54c1a8910182b49b0db4264e909d/0001-Adapt-to-Ogre-1.10.patch
 
+# Also for
+RUN $PREFIXED emerge dev-qt/qttest dev-qt/qtconcurrent
+
+# For ros-kinetic/opencv3 as reported in https://github.com/ros/ros-overlay/issues/726
+RUN echo ">=dev-games/ogre-1.10.12 experimental" >> $EPREFIX/etc/portage/package.use
+RUN emerge dev-games/ogre
+
 # Setup desktop (237 packages)
 RUN $PREFIXED emerge ros-kinetic/desktop || true
 
