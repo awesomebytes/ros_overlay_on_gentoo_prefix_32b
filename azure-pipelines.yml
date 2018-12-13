@@ -32,12 +32,15 @@ jobs:
     # Push it
     - script: docker push $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)
       displayName: 'push image to DockerHub'
+      condition: always()
     # Tag as :latest too
     - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'tag as latest'
+      condition: always()
     # Push as latest
     - script: docker push $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'push latest to DockerHub'
+      condition: always()
  
   - job: package_stage_ros_base
     timeoutInMinutes: 0
@@ -70,12 +73,15 @@ jobs:
     # Push it
     - script: docker push $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)
       displayName: 'push image to DockerHub'
+      condition: always()
     # Tag as :latest too
     - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'tag as latest'
+      condition: always()
     # Push as latest
     - script: docker push $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'push latest to DockerHub'
+      condition: always()
 
     # Create a temporal container to copy the gentoo_on_tmp.tar.gz
     - script: |
@@ -131,12 +137,15 @@ jobs:
     # Push it
     - script: docker push $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)
       displayName: 'push image to DockerHub'
+      condition: always()
     # Tag as :latest too
     - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'tag as latest'
+      condition: always()
     # Push as latest
     - script: docker push $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'push latest to DockerHub'
+      condition: always()
  
   - job: package_stage_desktop
     timeoutInMinutes: 0
@@ -169,12 +178,15 @@ jobs:
     # Push it
     - script: docker push $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)
       displayName: 'push image to DockerHub'
+      condition: always()
     # Tag as :latest too
     - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'tag as latest'
+      condition: always()
     # Push as latest
     - script: docker push $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'push latest to DockerHub'
+      condition: always()
 
     # Create a temporal container to copy the gentoo_on_tmp.tar.gz
     - script: |
