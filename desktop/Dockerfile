@@ -99,6 +99,16 @@ RUN $PREFIXED emerge dev-qt/qttest dev-qt/qtconcurrent
 RUN echo ">=dev-games/ogre-1.10.12 experimental" >> $EPREFIX/etc/portage/package.use
 RUN emerge dev-games/ogre
 
+# As reported here https://github.com/ros/ros-overlay/issues/581
+# For cv_bridge, camera_calibration_parsers (at least)
+RUN echo ">=dev-libs/boost-1.65.0 python" >> $EPREFIX/etc/portage/package.use
+RUN $PREFIXED emerge dev-libs/boost[python]
+RUN cd $EPREFIX/usr/lib &&\
+    ln -s libboost_python-2.7.so libboost_python.so
+
+# May make opencv stuff faster
+#RUN emerge sci-libs/atlas
+
 # Setup desktop (237 packages)
 RUN $PREFIXED emerge ros-kinetic/desktop || true
 
