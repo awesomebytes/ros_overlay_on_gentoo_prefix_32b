@@ -66,7 +66,7 @@ RUN echo "# required by dev-libs/urdfdom-9999::gentoo\n\
 # required by ros-kinetic/robot-1.3.2::ros-overlay\n\
 # required by ros-kinetic/desktop-1.3.2::ros-overlay\n\
 # required by ros-kinetic/desktop (argument)\n\
-=dev-libs/collada-dom-9999 **" >> /tmp/gentoo/etc/portage/package.use
+=dev-libs/collada-dom-9999 **" >> /tmp/gentoo/etc/portage/package.accept_keywords
 
 # Until https://github.com/ros/ros-overlay/pull/719 is merged
 # We need to patch and re-emerge message_filters (and anything that depends on it)
