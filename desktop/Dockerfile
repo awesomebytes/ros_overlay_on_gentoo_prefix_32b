@@ -87,6 +87,8 @@ RUN mkdir -p $EPREFIX/etc/portage/patches/dev-qt/qtcore &&\
 # cause of https://github.com/ros/ros-overlay/issues/725
 RUN $PREFIXED emerge dev-qt/qtwidgets
 
+RUN echo "dev-qt/qtwebkit-5.212.0_pre20180120" >> $EPREFIX/etc/portage/profile/package.provided
+
 # patch https://github.com/ros/ros-overlay/issues/724
 RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/rviz_plugin_tutorials &&\
     cd $EPREFIX/etc/portage/patches/ros-kinetic/rviz_plugin_tutorials &&\
