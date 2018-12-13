@@ -92,8 +92,19 @@ sync-uri = https://github.com/ros/ros-overlay\n\
 auto-sync = yes\n\
 masters = gentoo" > $EPREFIX/etc/portage/repos.conf/ros-overlay.conf
 
-# Sync ros-overlay
-RUN $PREFIXED emaint sync -r ros-overlay
+# Set up Gentoo to sync via git (way faster)
+RUN rm -rf $EPREFIX/usr/portage && echo "[ros-overlay]\n\
+[DEFAULT]\n\
+main-repo = gentoo\n\
+\n\
+[gentoo]\n\
+location = /tmp/gentoo/usr/portage\n\
+sync-type = git\n\
+sync-uri = https://github.com/gentoo-mirror/gentoo \n\
+auto-sync = yes" > $EPREFIX/etc/portage/repos.conf/ros-overlay.conf
+
+# Sync everything
+RUN $PREFIXED emerge --sync
 
 # rosdep fails with
 # ERROR: cannot verify pypi.org's certificate, issued by 'CN=DigiCert SHA2 Extended Validation Server CA,OU=www.digicert.com,O=DigiCert Inc,C=US':
