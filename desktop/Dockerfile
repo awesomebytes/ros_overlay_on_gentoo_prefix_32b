@@ -99,7 +99,7 @@ RUN $PREFIXED emerge dev-qt/qttest dev-qt/qtconcurrent
 
 # For ros-kinetic/opencv3 as reported in https://github.com/ros/ros-overlay/issues/726
 RUN echo ">=dev-games/ogre-1.10.12 experimental" >> $EPREFIX/etc/portage/package.use
-RUN emerge dev-games/ogre
+RUN $PREFIXED emerge dev-games/ogre
 
 # As reported here https://github.com/ros/ros-overlay/issues/581
 # For cv_bridge, camera_calibration_parsers (at least)
