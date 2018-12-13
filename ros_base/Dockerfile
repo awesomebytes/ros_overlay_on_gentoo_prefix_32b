@@ -101,7 +101,7 @@ main-repo = gentoo\n\
 location = /tmp/gentoo/usr/portage\n\
 sync-type = git\n\
 sync-uri = https://github.com/gentoo-mirror/gentoo \n\
-auto-sync = yes" > $EPREFIX/etc/portage/repos.conf/ros-overlay.conf
+auto-sync = yes" > $EPREFIX/etc/portage/repos.conf/gentoo.conf
 
 # Sync everything
 RUN $PREFIXED emerge --sync
