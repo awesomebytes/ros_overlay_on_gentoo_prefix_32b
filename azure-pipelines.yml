@@ -123,7 +123,8 @@ jobs:
     - script: docker login -u $(DockerHub_user) -p $(DockerHub_password)
       displayName: 'docker login'
     # need to add --security-opt seccomp:unconfined cause of https://bugs.gentoo.org/672602
-    - script: cd ros_base && docker build --security-opt seccomp:unconfined -f Dockerfile -t $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) .
+    # doesnt work on docker build, need another workaround?
+    - script: cd ros_base && docker build -f Dockerfile -t $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) .
       displayName: 'docker build'
       # This means up to 6h
       timeoutInMinutes: 0
