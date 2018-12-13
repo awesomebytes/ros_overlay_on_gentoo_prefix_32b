@@ -57,7 +57,7 @@ RUN $PREFIXED emerge ros-kinetic/message_filters
 
 
 # For https://bugs.gentoo.org/649808
-RUN mkdir -p/tmp/gentoo/etc/portage/profile && \
+RUN mkdir -p /tmp/gentoo/etc/portage/profile && \
     echo "sys-fs/udev-init-scripts-32" >> /tmp/gentoo/etc/portage/profile/package.provided
 
 # Newer version doesn't emerge cause it wants to link with libudev.so
