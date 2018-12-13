@@ -48,6 +48,26 @@ RUN echo "# required by media-gfx/graphviz-2.40.1-r1::gentoo\n\
 # required by ros-kinetic/desktop (argument)\n\
 >=sys-libs/zlib-1.2.11-r2 minizip" >> /tmp/gentoo/etc/portage/package.use
 
+RUN echo "# required by dev-libs/urdfdom-9999::gentoo\n\
+# required by ros-kinetic/urdf-1.12.12::ros-overlay\n\
+# required by ros-kinetic/collada_urdf-1.12.12::ros-overlay\n\
+# required by ros-kinetic/robot_model-1.12.11::ros-overlay\n\
+# required by ros-kinetic/robot-1.3.2::ros-overlay\n\
+# required by ros-kinetic/desktop-1.3.2::ros-overlay\n\
+# required by ros-kinetic/desktop (argument)\n\
+=dev-libs/urdfdom_headers-9999 **\n\
+# required by ros-kinetic/robot_model-1.12.11::ros-overlay\n\
+# required by ros-kinetic/robot-1.3.2::ros-overlay\n\
+# required by ros-kinetic/desktop-1.3.2::ros-overlay\n\
+# required by ros-kinetic/desktop (argument)\n\
+=dev-libs/urdfdom-9999 **\n\
+# required by ros-kinetic/collada_urdf-1.12.12::ros-overlay\n\
+# required by ros-kinetic/robot_model-1.12.11::ros-overlay\n\
+# required by ros-kinetic/robot-1.3.2::ros-overlay\n\
+# required by ros-kinetic/desktop-1.3.2::ros-overlay\n\
+# required by ros-kinetic/desktop (argument)\n\
+=dev-libs/collada-dom-9999 **" >> /tmp/gentoo/etc/portage/package.use
+
 # Until https://github.com/ros/ros-overlay/pull/719 is merged
 # We need to patch and re-emerge message_filters (and anything that depends on it)
 RUN mkdir -p /tmp/gentoo/etc/portage/patches/ros-kinetic/message_filters
