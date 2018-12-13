@@ -71,24 +71,6 @@ ros-lunar/* PYTHON_SINGLE_TARGET: -* python2_7\n\
 RUN echo "en_US.UTF-8 UTF-8" >> $EPREFIX/etc/locale.gen
 RUN $PREFIXED locale-gen
 
-# # Needed for dev-perl/TimeDate-2.300.0
-# # as it errors with dodoc failing with
-# # ERROR:root:Failed to copy file: _parsed_options=Namespace(group=-1, mode=420, owner=-1, preserve_timestamps=False), source='ChangeLog', dest_dir='/home/user/gentoo/var/tmp/portage/dev-perl/TimeDate-2.300.0/image/tmp/gentoo/usr/share/doc/TimeDate-2.300.0'
-# # Traceback (most recent call last):
-# #   File "/tmp/gentoo/usr/lib/portage/python2.7/doins.py", line 209, in run
-# #     copyfile(source, dest)
-# #   File "/home/user/gentoo/usr/lib/python2.7/site-packages/portage/util/file_copy/__init__.py", line 30, in _optimized_copyfile
-# #     _file_copy(src_file.fileno(), dst_file.fileno())
-# # OSError: [Errno 1] Operation not permitted
-# RUN echo "dev-perl/TimeDate-2.300.0" >> $EPREFIX/etc/portage/profile/package.provided
-# RUN echo "dev-perl/MailTools-2.190.0" >> $EPREFIX/etc/portage/profile/package.provided
-# RUN echo "dev-perl/Digest-HMAC-1.30.0-r1" >> $EPREFIX/etc/portage/profile/package.provided
-# RUN echo "dev-perl/Authen-SASL-2.160.0-r1" >> $EPREFIX/etc/portage/profile/package.provided
-# RUN echo "dev-perl/Net-SSLeay-1.820.0" >> $EPREFIX/etc/portage/profile/package.provided
-# RUN echo "dev-perl/IO-Socket-SSL-2.52.0" >> $EPREFIX/etc/portage/profile/package.provided
-# RUN echo "dev-perl/Net-SMTP-SSL-1.40.0" >> $EPREFIX/etc/portage/profile/package.provided
-# RUN echo "dev-perl/Module-Build-0.422.400" >> $EPREFIX/etc/portage/profile/package.provided
-
 # Let's make the compilations faster when possible
 # Substitute the default -j2 with -j<NUM_CORES/2>
 RUN sed -i -e 's/j2/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPREFIX/etc/portage/make.conf
@@ -124,13 +106,11 @@ RUN $PREFIXED update-ca-certificates
 
 # Currently there is a bug that wont allow to compile rostime and others:
 # https://github.com/ros/ros-overlay/issues/711
-# # Downgrading cmake seems to work it out
-# # We do it here as cmake is emerged as a dependency before we actually
-# # emerge ros-kinetic/ros_base
-# RUN echo ">=dev-util/cmake-3.13.0" >> $EPREFIX/etc/portage/package.mask
-# Probably a better workaround is:
 RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/catkin
 COPY 0001-Workaround-error-issue-ros-overlay-711.patch $EPREFIX/etc/portage/patches/ros-kinetic/catkin/0001-Workaround-error-issue-ros-overlay-711.patch
+
+# It's also needed to not run in problems later on (on ros-kinetic/desktop)
+RUN echo ">dev-util/cmake-3.12.3" >> /tmp/gentoo/etc/portage/package.mask
 
 # Needed to emerge dev-python/rosdep on 32b
 RUN echo "# required by dev-python/rosdep-0.13.0::ros-overlay\n\
@@ -181,7 +161,6 @@ RUN echo "# required by ros-kinetic/cpp_common-0.6.11::ros-overlay\n\
 # /usr/include/string.h:627:12: fatal error: bits/string.h: No such file or directory
 # #  include <bits/string.h>
 RUN echo ">=dev-python/pillow-5.2.0" >> $EPREFIX/etc/portage/package.mask
-
 
 # Setup the basic ROS
 RUN $PREFIXED emerge ros-kinetic/ros_base || true
