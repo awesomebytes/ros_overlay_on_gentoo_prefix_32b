@@ -111,7 +111,7 @@ RUN $PREFIXED emerge dev-qt/qttest dev-qt/qtconcurrent
 # For ros-kinetic/opencv3 as reported in https://github.com/ros/ros-overlay/issues/726
 RUN echo ">=dev-games/ogre-1.10.12 experimental" >> $EPREFIX/etc/portage/package.use
 RUN sed -i 's/-DOGRE_NODE_STORAGE_LEGACY=no/-DOGRE_NODE_STORAGE_LEGACY=yes/g' $EPREFIX/usr/portage/dev-games/ogre/ogre-1.10.12.ebuild &&\
-    ebuild $EPREFIX/usr/portage/dev-games/ogre/ogre-1.10.12.ebuild manifest
+    $PREFIXED ebuild $EPREFIX/usr/portage/dev-games/ogre/ogre-1.10.12.ebuild manifest
 RUN $PREFIXED emerge dev-games/ogre
 
 # As reported here https://github.com/ros/ros-overlay/issues/581
