@@ -139,7 +139,7 @@ RUN $PREFIXED emerge ros-kinetic/desktop || true
 # so we let ros-kinetic/desktop fail once and do this
 RUN cd /tmp/gentoo/usr/bin && \
     unlink qmake && \
-    ln -s /tmp/gentoo/usr/lib64/qt5/bin/qmake qmake
+    ln -s /tmp/gentoo/usr/lib/qt5/bin/qmake qmake
 RUN $PREFIXED emerge ros-kinetic/desktop
 
 
