@@ -83,11 +83,6 @@ RUN echo ">media-libs/libv4l-1.10.1" >> /tmp/gentoo/etc/portage/package.mask
 RUN sed -i 's/local tmp_root=\${D%\/}\/tmp/local tmp_root=\${ED%\/}\/tmp/g' /tmp/gentoo/usr/portage/dev-python/PyQt5/PyQt5-5.10.1-r1.ebuild
 RUN $PREFIXED ebuild /tmp/gentoo/usr/portage/dev-python/PyQt5/PyQt5-5.10.1-r1.ebuild manifest
 
-# Patch Rviz
-RUN mkdir -p /tmp/gentoo/etc/portage/patches/ros-kinetic/rviz && \
-    cd /tmp/gentoo/etc/portage/patches/ros-kinetic/rviz && \
-    wget https://gist.githubusercontent.com/awesomebytes/c1ba75ec3329aa63d768320b43743e70/raw/c1252160503302cf91c4bf73ef880fa9225cb7f4/0001-Adapt-Rviz-to-Ogre-1.11.patch
-
 # If we can go faster, try
 RUN sed -i -e 's/j1/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPREFIX/etc/portage/make.conf
 RUN sed -i -e 's/j2/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPREFIX/etc/portage/make.conf
