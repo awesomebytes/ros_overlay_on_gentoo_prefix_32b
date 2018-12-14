@@ -128,22 +128,20 @@ RUN $PREFIXED emerge dev-libs/boost[python]
 RUN cd $EPREFIX/usr/lib &&\
     ln -s libboost_python-2.7.so libboost_python.so
 
-# May make opencv stuff faster
-#RUN emerge sci-libs/atlas
 
-# Setup desktop (237 packages)
-RUN $PREFIXED emerge ros-kinetic/desktop || true
+# # Setup desktop (237 packages)
+# RUN $PREFIXED emerge ros-kinetic/desktop || true
 
-# Extra trick needed as qmake points to qtchooser for Rviz, but we can only do it
-# when we already have QT5
-# so we let ros-kinetic/desktop fail once and do this
-RUN cd /tmp/gentoo/usr/bin && \
-    unlink qmake && \
-    ln -s /tmp/gentoo/usr/lib/qt5/bin/qmake qmake
-RUN $PREFIXED emerge ros-kinetic/desktop
+# # Extra trick needed as qmake points to qtchooser for Rviz, but we can only do it
+# # when we already have QT5
+# # so we let ros-kinetic/desktop fail once and do this
+# RUN cd /tmp/gentoo/usr/bin && \
+#     unlink qmake && \
+#     ln -s /tmp/gentoo/usr/lib/qt5/bin/qmake qmake
+# RUN $PREFIXED emerge ros-kinetic/desktop
 
 
-# Create the bin packages
-RUN $PREFIXED quickpkg \"*/*\" --include-config y --include-unmodified-config y
+# # Create the bin packages
+# RUN $PREFIXED quickpkg \"*/*\" --include-config y --include-unmodified-config y
 
 ENTRYPOINT ["/bin/bash"]

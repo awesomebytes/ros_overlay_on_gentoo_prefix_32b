@@ -65,8 +65,6 @@ jobs:
       # This means up to 6h
       timeoutInMinutes: 0
       # Even if it fails I want to push the image to DockerHub for inspection
-      # continueOnError: true
-      # # Try to tag the latest failed image we ran
     - script: docker tag `docker ps -a -l -q | xargs docker commit | awk -F":" '{print $2}'` $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)
       displayName: 'create image to push to DockerHub'
       condition: failed()
@@ -109,7 +107,8 @@ jobs:
       displayName: 'Create Release'
 
 
-  - job: "build_ros_kinetic_desktop"
+
+  - job: "build_ros_kinetic_desktop_1"
     timeoutInMinutes: 0
     dependsOn: "package_stage_ros_base"
 
@@ -117,13 +116,11 @@ jobs:
       vmImage: 'Ubuntu 16.04'
 
     variables:
-      docker_image_name: roogp_32b_ros_kinetic_desktop
+      docker_image_name: roogp_32b_ros_kinetic_desktop_1
 
     steps:
     - script: docker login -u $(DockerHub_user) -p $(DockerHub_password)
       displayName: 'docker login'
-    # need to add --security-opt seccomp:unconfined cause of https://bugs.gentoo.org/672602
-    # doesnt work on docker build, need another workaround?
     - script: cd desktop && docker build -f Dockerfile -t $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) .
       displayName: 'docker build'
       # This means up to 6h
@@ -147,10 +144,45 @@ jobs:
     - script: docker push $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'push latest to DockerHub'
       condition: always()
+
+  - job: "build_ros_kinetic_desktop_2"
+    timeoutInMinutes: 0
+    dependsOn: "build_ros_kinetic_desktop_1"
+
+    pool:
+      vmImage: 'Ubuntu 16.04'
+
+    variables:
+      docker_image_name: roogp_32b_ros_kinetic_desktop_2
+
+    steps:
+    - script: docker login -u $(DockerHub_user) -p $(DockerHub_password)
+      displayName: 'docker login'
+    - script: cd desktop && docker build -f Dockerfile2 -t $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) .
+      displayName: 'docker build'
+      # This means up to 6h
+      timeoutInMinutes: 0
+      # Even if it fails I want to push the image to DockerHub for inspection
+    - script: docker tag `docker ps -a -l -q | xargs docker commit | awk -F":" '{print $2}'` $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)
+      displayName: 'create image to push to DockerHub'
+      condition: failed()
+
+    # Push it
+    - script: docker push $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)
+      displayName: 'push image to DockerHub'
+      condition: always()
+    # Tag as :latest too
+    - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
+      displayName: 'tag as latest'
+      condition: always()
+    # Push as latest
+    - script: docker push $(DockerHub_user)/$(docker_image_name):latest
+      displayName: 'push latest to DockerHub'
+      condition: always()
  
   - job: package_stage_desktop
     timeoutInMinutes: 0
-    dependsOn: "build_ros_kinetic_desktop"
+    dependsOn: "build_ros_kinetic_desktop_2"
 
     pool:
       vmImage: 'Ubuntu 16.04'
@@ -171,8 +203,6 @@ jobs:
       # This means up to 6h
       timeoutInMinutes: 0
       # Even if it fails I want to push the image to DockerHub for inspection
-      # continueOnError: true
-    # # Try to tag the latest failed image we ran
     - script: docker tag `docker ps -a -l -q | xargs docker commit | awk -F":" '{print $2}'` $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)
       displayName: 'create image to push to DockerHub'
       condition: failed()
