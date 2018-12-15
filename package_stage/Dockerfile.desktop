@@ -1,4 +1,4 @@
-FROM awesomebytes/roogp_32b_ros_kinetic_desktop
+FROM awesomebytes/roogp_32b_ros_kinetic_desktop_2
 
 # Create the .tar.gz
 RUN tar cvzf /tmp/gentoo_on_tmp.tar.gz gentoo
