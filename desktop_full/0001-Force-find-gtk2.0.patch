@@ -1,0 +1,27 @@
+From 82eabfa07b884f1367f33283db8447f31b8e3705 Mon Sep 17 00:00:00 2001
+From: Sammy Pfeiffer <Sammy.Pfeiffer@student.uts.edu.au>
+Date: Tue, 18 Dec 2018 03:22:39 +1100
+Subject: [PATCH] Force find gtk2.0
+
+---
+ CMakeLists.txt | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 0b98148..3b5328e 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -38,6 +38,10 @@ if(ANDROID)
+   return()
+ endif()
+ 
++# Hardcode as it is not found in Gentoo Prefix
++set(GTK2_GDKCONFIG_INCLUDE_DIR $ENV{EPREFIX}/usr/lib/gtk-2.0/include)
++set(GTK2_GLIBCONFIG_INCLUDE_DIR $ENV{EPREFIX}/usr/lib/glib-2.0/include)
++
+ find_package(GTK2)
+ add_definitions(-DHAVE_GTK)
+ include_directories(${GTK2_INCLUDE_DIRS})
+-- 
+2.7.4
+
