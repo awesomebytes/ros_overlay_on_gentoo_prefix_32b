@@ -52,8 +52,9 @@ ENV CHOST i686-pc-linux-gnu
 
 # Build python with sqlite and bluetooth support
 # I find very surprising sqlite is not mandatory
+# Also enable PGO and LTO optimizations
 RUN echo "dev-lang/python sqlite bluetooth readline" >> $EPREFIX/etc/portage/package.use
-RUN $PREFIXED emerge python:2.7[sqlite,bluetooth,readline] python:3.6[sqlite,bluetooth,readline]
+RUN EXTRA_ECONF="--enable-optimizations --with-lto" $PREFIXED emerge python:2.7[sqlite,bluetooth,readline] python:3.6[sqlite,bluetooth,readline]
 
 # By default it's python3 (option 1) but ROS uses Python 2.7 (as of now)
 # Choosing Python 2.7
