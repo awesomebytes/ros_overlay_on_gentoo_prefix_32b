@@ -50,7 +50,12 @@ ENV PREFIXED="linux32 /tmp/gentoo/executeonprefix"
 ENV EPREFIX=/tmp/gentoo
 ENV CHOST i686-pc-linux-gnu
 
-# By default it's python3 (option 1)
+# Build python with sqlite and bluetooth support
+# I find very surprising sqlite is not mandatory
+RUN echo "dev-lang/python sqlite bluetooth readline"
+RUN $PREFIXED emerge python:2.7[sqlite,bluetooth,readline] python:3.6[sqlite,bluetooth,readline]
+
+# By default it's python3 (option 1) but ROS uses Python 2.7 (as of now)
 # Choosing Python 2.7
 RUN $PREFIXED eselect python set 2
 
