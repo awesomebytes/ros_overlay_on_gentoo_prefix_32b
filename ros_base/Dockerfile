@@ -37,7 +37,7 @@ RUN cat /proc/meminfo
 RUN df -h
 
 # Note that we always use the same one
-RUN aria2c -x 10 https://github.com/awesomebytes/gentoo_prefix_ci_32b/releases/download/release%2F2018-12-13T07at49plus00at00/gentoo_on_tmp-x86_2018-12-13T07at49plus00at00.tar.gz
+RUN aria2c -x 10 https://github.com/awesomebytes/gentoo_prefix_ci_32b/releases/download/release%2F2018-12-17T20at44plus00at00/gentoo_on_tmp-x86_2018-12-17T20at44plus00at00.tar.gz
 
 RUN tar xvf gentoo_on_tmp-*.tar.gz; rm gentoo_on_tmp-*.tar.gz
 
@@ -124,6 +124,8 @@ COPY 0001-Workaround-error-issue-ros-overlay-711.patch $EPREFIX/etc/portage/patc
 
 # It's also needed to not run in problems later on (on ros-kinetic/desktop)
 RUN echo ">dev-util/cmake-3.12.3" >> /tmp/gentoo/etc/portage/package.mask
+# Make sure we emerge that version
+RUN $PREFIXED emerge dev-util/cmake
 
 # Needed to emerge dev-python/rosdep on 32b
 RUN echo "# required by dev-python/rosdep-0.13.0::ros-overlay\n\
@@ -137,11 +139,8 @@ RUN echo "# required by dev-python/rosdep-0.13.0::ros-overlay\n\
 # required by dev-python/rosdep (argument)\n\
 =dev-python/rospkg-9999 **" >> $EPREFIX/etc/portage/package.accept_keywords
 
-# Make sure rosdep emerges OK
-RUN $PREFIXED emerge dev-python/rosdep
-
-# Make sure catkin emerges OK
-RUN $PREFIXED emerge ros-kinetic/catkin
+# Make sure rosdep & catkin emerge OK
+RUN $PREFIXED emerge dev-python/rosdep ros-kinetic/catkin
 
 # Needed to emerge ros-kinetic/ros_base
 RUN echo "# required by dev-python/wxpython-3.0.2.0::gentoo\n\
@@ -186,6 +185,6 @@ RUN $PREFIXED emerge ros-kinetic/ros_base || true
 RUN $PREFIXED emerge ros-kinetic/ros_base
 
 # Create the bin packages
-RUN $PREFIXED quickpkg \"*/*\" --include-config y --include-unmodified-config y
+# RUN $PREFIXED quickpkg \"*/*\" --include-config y --include-unmodified-config y
 
 ENTRYPOINT ["/bin/bash"]
