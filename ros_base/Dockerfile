@@ -50,29 +50,6 @@ ENV PREFIXED="linux32 /tmp/gentoo/executeonprefix"
 ENV EPREFIX=/tmp/gentoo
 ENV CHOST i686-pc-linux-gnu
 
-# Build python with sqlite and bluetooth support
-# I find very surprising sqlite is not mandatory
-# Also enable PGO and LTO optimizations
-RUN echo "dev-lang/python sqlite bluetooth readline" >> $EPREFIX/etc/portage/package.use
-RUN EXTRA_ECONF="--enable-optimizations --with-lto" $PREFIXED emerge python:2.7[sqlite,bluetooth,readline] python:3.6[sqlite,bluetooth,readline]
-
-# By default it's python3 (option 1) but ROS uses Python 2.7 (as of now)
-# Choosing Python 2.7
-RUN $PREFIXED eselect python set 2
-
-# Only emerge for Python 2.7
-# Because of errors like:
-# Issue https://github.com/ros/ros-overlay/issues/715
-RUN echo "# From the Docker image of ros-overlay\n\
-# mainly force to build just Python 2.7\n\
-ros-indigo/* PYTHON_TARGETS: -* python2_7\n\
-ros-indigo/* PYTHON_SINGLE_TARGET: -* python2_7\n\
-ros-kinetic/* PYTHON_TARGETS: -* python2_7\n\
-ros-kinetic/* PYTHON_SINGLE_TARGET: -* python2_7\n\
-ros-lunar/* PYTHON_TARGETS: -* python2_7\n\
-ros-lunar/* PYTHON_SINGLE_TARGET: -* python2_7\n\
-" >> $EPREFIX/etc/portage/package.use
-
 # So we dont get complains
 RUN echo "en_US.UTF-8 UTF-8" >> $EPREFIX/etc/locale.gen
 RUN $PREFIXED locale-gen
@@ -99,8 +76,7 @@ auto-sync = yes\n\
 masters = gentoo" > $EPREFIX/etc/portage/repos.conf/ros-overlay.conf
 
 # Set up Gentoo to sync via git (way faster)
-RUN rm -rf $EPREFIX/usr/portage && echo "[ros-overlay]\n\
-[DEFAULT]\n\
+RUN rm -rf $EPREFIX/usr/portage && echo "[DEFAULT]\n\
 main-repo = gentoo\n\
 \n\
 [gentoo]\n\
@@ -110,16 +86,36 @@ sync-uri = https://github.com/gentoo-mirror/gentoo \n\
 auto-sync = yes" > $EPREFIX/etc/portage/repos.conf/gentoo.conf
 
 # Sync everything
-RUN $PREFIXED emerge --sync
+RUN $PREFIXED emaint sync -a
 
 # rosdep fails with
 # ERROR: cannot verify pypi.org's certificate, issued by 'CN=DigiCert SHA2 Extended Validation Server CA,OU=www.digicert.com,O=DigiCert Inc,C=US':
 #  Unable to locally verify the issuer's authority
-RUN $PREFIXED emerge dev-libs/openssl
-RUN $PREFIXED emerge app-misc/ca-certificates
-RUN $PREFIXED emerge net-misc/wget
-RUN $PREFIXED emerge net-misc/curl
+RUN $PREFIXED emerge dev-libs/openssl app-misc/ca-certificates net-misc/wget net-misc/curl
 RUN $PREFIXED update-ca-certificates
+
+# Build python with sqlite and bluetooth support
+# I find very surprising sqlite is not mandatory
+# Also enable PGO and LTO optimizations
+RUN echo "dev-lang/python sqlite bluetooth readline" >> $EPREFIX/etc/portage/package.use
+RUN EXTRA_ECONF="--enable-optimizations --with-lto" $PREFIXED emerge python:2.7[sqlite,bluetooth,readline] python:3.6[sqlite,bluetooth,readline]
+
+# By default it's python3 (option 1) but ROS uses Python 2.7 (as of now)
+# Choosing Python 2.7
+RUN $PREFIXED eselect python set 2
+
+# Only emerge for Python 2.7
+# Because of errors like:
+# Issue https://github.com/ros/ros-overlay/issues/715
+RUN echo "# From the Docker image of ros-overlay\n\
+# mainly force to build just Python 2.7\n\
+ros-indigo/* PYTHON_TARGETS: -* python2_7\n\
+ros-indigo/* PYTHON_SINGLE_TARGET: -* python2_7\n\
+ros-kinetic/* PYTHON_TARGETS: -* python2_7\n\
+ros-kinetic/* PYTHON_SINGLE_TARGET: -* python2_7\n\
+ros-lunar/* PYTHON_TARGETS: -* python2_7\n\
+ros-lunar/* PYTHON_SINGLE_TARGET: -* python2_7\n\
+" >> $EPREFIX/etc/portage/package.use
 
 # Currently there is a bug that wont allow to compile rostime and others:
 # https://github.com/ros/ros-overlay/issues/711
@@ -179,8 +175,6 @@ RUN echo "# required by ros-kinetic/cpp_common-0.6.11::ros-overlay\n\
 # #  include <bits/string.h>
 RUN echo ">=dev-python/pillow-5.2.0" >> $EPREFIX/etc/portage/package.mask
 
-# New version of glibc came out but it crashes
-RUN echo ">=dev-libs/glib-2.58.1" >> $EPREFIX/etc/portage/package.mask
 
 # Setup the basic ROS
 RUN $PREFIXED emerge ros-kinetic/ros_base || true

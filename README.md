@@ -12,6 +12,7 @@ Ready-to-use releases: https://github.com/awesomebytes/ros_overlay_on_gentoo_pre
 # Currently building
 
 * ros-kinetic/ros_base
+* ros-kinetic/desktop
 
 # Try it
 
@@ -28,7 +29,6 @@ rm gentoo_on_tmp*
 ./gentoo/startprefix
 ```
 
-# TODO
+# WIP
 
-* ros-kinetic/desktop
 * ros-kinetic/desktop_full
