@@ -82,30 +82,22 @@ RUN echo ">media-libs/libv4l-1.10.1" >> /tmp/gentoo/etc/portage/package.mask
 # https://wiki.gentoo.org/wiki/Handbook:AMD64/Portage/CustomTree#Defining_a_custom_repository
 RUN sed -i 's/local tmp_root=\${D%\/}\/tmp/local tmp_root=\${ED%\/}\/tmp/g' /tmp/gentoo/usr/portage/dev-python/PyQt5/PyQt5-5.10.1-r1.ebuild
 RUN $PREFIXED ebuild /tmp/gentoo/usr/portage/dev-python/PyQt5/PyQt5-5.10.1-r1.ebuild manifest
-# For https://github.com/ros/ros-overlay/issues/729
-RUN echo ">=dev-python/PyQt5-5.10.1-r1 gui widgets" >> /tmp/gentoo/etc/portage/package.use
-# Patch building Qt inside of a docker container https://bugs.gentoo.org/672602
-RUN mkdir -p $EPREFIX/etc/portage/patches/dev-qt/qtcore &&\
-    cd $EPREFIX/etc/portage/patches/dev-qt/qtcore &&\
-    wget https://gist.githubusercontent.com/awesomebytes/856d1d1b0d267f90241451d933a17867/raw/0d4f5eb1095999ffa1265ee6b59ecb33833e63c7/0001-Overcome-statx-libseccomp-issue-with-running-inside-.patch
-RUN $PREFIXED emerge dev-python/PyQt5[gui,widgets]
 
 # If we can go faster, try
 RUN sed -i -e 's/j1/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPREFIX/etc/portage/make.conf
 RUN sed -i -e 's/j2/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPREFIX/etc/portage/make.conf
 
-# cause of https://github.com/ros/ros-overlay/issues/725
-RUN $PREFIXED emerge dev-qt/qtwidgets
+# Patch building Qt inside of a docker container https://bugs.gentoo.org/672602
+RUN mkdir -p $EPREFIX/etc/portage/patches/dev-qt/qtcore-5.11.3 &&\
+    cd $EPREFIX/etc/portage/patches/dev-qt/qtcore-5.11.3 &&\
+    wget https://gist.githubusercontent.com/awesomebytes/856d1d1b0d267f90241451d933a17867/raw/0d4f5eb1095999ffa1265ee6b59ecb33833e63c7/0001-Overcome-statx-libseccomp-issue-with-running-inside-.patch
+# For https://github.com/ros/ros-overlay/issues/729
+RUN echo ">=dev-python/PyQt5-5.10.1-r1 gui widgets" >> /tmp/gentoo/etc/portage/package.use
 
+# cause of https://github.com/ros/ros-overlay/issues/725
+RUN $PREFIXED emerge dev-qt/qttest dev-qt/qtconcurrent dev-qt/qtwidgets dev-python/PyQt5[gui,widgets]
 RUN echo "dev-qt/qtwebkit-5.212.0_pre20180120" >> $EPREFIX/etc/portage/profile/package.provided
 
-# patch https://github.com/ros/ros-overlay/issues/724
-RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/rviz_plugin_tutorials &&\
-    cd $EPREFIX/etc/portage/patches/ros-kinetic/rviz_plugin_tutorials &&\
-    wget https://gist.githubusercontent.com/awesomebytes/b1cc1490045a568b68dcd618629de405/raw/bbebd2f6a65c54c1a8910182b49b0db4264e909d/0001-Adapt-to-Ogre-1.10.patch
-
-# Also for
-RUN $PREFIXED emerge dev-qt/qttest dev-qt/qtconcurrent
 
 # For ros-kinetic/opencv3 as reported in https://github.com/ros/ros-overlay/issues/726
 RUN echo ">=dev-games/ogre-1.10.12 experimental" >> $EPREFIX/etc/portage/package.use
@@ -120,20 +112,11 @@ RUN $PREFIXED emerge dev-libs/boost[python]
 RUN cd $EPREFIX/usr/lib &&\
     ln -s libboost_python-2.7.so libboost_python.so
 
-
-# # Setup desktop (237 packages)
-# RUN $PREFIXED emerge ros-kinetic/desktop || true
-
-# # Extra trick needed as qmake points to qtchooser for Rviz, but we can only do it
-# # when we already have QT5
-# # so we let ros-kinetic/desktop fail once and do this
-# RUN cd /tmp/gentoo/usr/bin && \
-#     unlink qmake && \
-#     ln -s /tmp/gentoo/usr/lib/qt5/bin/qmake qmake
-# RUN $PREFIXED emerge ros-kinetic/desktop
+# patch https://github.com/ros/ros-overlay/issues/724
+RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/rviz_plugin_tutorials &&\
+    cd $EPREFIX/etc/portage/patches/ros-kinetic/rviz_plugin_tutorials &&\
+    wget https://gist.githubusercontent.com/awesomebytes/b1cc1490045a568b68dcd618629de405/raw/bbebd2f6a65c54c1a8910182b49b0db4264e909d/0001-Adapt-to-Ogre-1.10.patch
 
 
-# # Create the bin packages
-# RUN $PREFIXED quickpkg \"*/*\" --include-config y --include-unmodified-config y
 
 ENTRYPOINT ["/bin/bash"]
