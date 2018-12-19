@@ -112,11 +112,6 @@ RUN $PREFIXED emerge dev-libs/boost[python]
 RUN cd $EPREFIX/usr/lib &&\
     ln -s libboost_python-2.7.so libboost_python.so
 
-# patch https://github.com/ros/ros-overlay/issues/724
-RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/rviz_plugin_tutorials &&\
-    cd $EPREFIX/etc/portage/patches/ros-kinetic/rviz_plugin_tutorials &&\
-    wget https://gist.githubusercontent.com/awesomebytes/b1cc1490045a568b68dcd618629de405/raw/bbebd2f6a65c54c1a8910182b49b0db4264e909d/0001-Adapt-to-Ogre-1.10.patch
-
 
 
 ENTRYPOINT ["/bin/bash"]
