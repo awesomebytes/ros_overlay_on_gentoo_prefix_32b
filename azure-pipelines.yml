@@ -5,14 +5,14 @@
 
 # Everything must be under a 'job' to be able to set the timeoutInMinutes
 jobs:
-  - job: "build_ros_kinetic_ros_base"
+  - job: "build_ros_kinetic_ros_base_1"
     timeoutInMinutes: 0
 
     pool:
       vmImage: 'Ubuntu 16.04'
 
     variables:
-      docker_image_name: roogp_32b_ros_kinetic_ros_base
+      docker_image_name: roogp_32b_ros_kinetic_ros_base_setup
 
     steps:
     - script: docker login -u $(DockerHub_user) -p $(DockerHub_password)
@@ -41,10 +41,48 @@ jobs:
     - script: docker push $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'push latest to DockerHub'
       condition: always()
+
+  - job: "build_ros_kinetic_ros_base_2"
+    timeoutInMinutes: 0
+    dependsOn: "build_ros_kinetic_ros_base_1"
+
+    pool:
+      vmImage: 'Ubuntu 16.04'
+
+    variables:
+      docker_image_name: roogp_32b_ros_kinetic_ros_base
+
+    steps:
+    - script: docker login -u $(DockerHub_user) -p $(DockerHub_password)
+      displayName: 'docker login'
+    # We divide the boostrap in 3 parts to not go over the 6h limit as gcc takes ages
+    - script: cd ros_base && docker build -f Dockerfile2 -t $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) .
+      displayName: 'docker build'
+      # This means up to 6h
+      timeoutInMinutes: 0
+      # Even if it fails I want to push the image to DockerHub for inspection
+    # The variables are set on the Build options on the web interface
+    # # Try to tag the latest failed image we ran
+    - script: docker tag `docker ps -a -l -q | xargs docker commit | awk -F":" '{print $2}'` $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)
+      displayName: 'create image to push to DockerHub'
+      condition: failed()
+
+    # Push it
+    - script: docker push $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)
+      displayName: 'push image to DockerHub'
+      condition: always()
+    # Tag as :latest too
+    - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
+      displayName: 'tag as latest'
+      condition: always()
+    # Push as latest
+    - script: docker push $(DockerHub_user)/$(docker_image_name):latest
+      displayName: 'push latest to DockerHub'
+      condition: always()
  
   - job: package_stage_ros_base
     timeoutInMinutes: 0
-    dependsOn: "build_ros_kinetic_ros_base"
+    dependsOn: "build_ros_kinetic_ros_base_2"
 
     pool:
       vmImage: 'Ubuntu 16.04'
