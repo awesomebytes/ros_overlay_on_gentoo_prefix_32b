@@ -37,7 +37,7 @@ RUN cat /proc/meminfo
 RUN df -h
 
 # Note that we always use the same one
-RUN aria2c -x 10 https://github.com/awesomebytes/gentoo_prefix_ci_32b/releases/download/release%2F2019-01-03T18at01plus00at00/gentoo_on_tmp-x86_2019-01-03T18at01plus00at00.tar.gz
+RUN aria2c -x 10 https://github.com/awesomebytes/gentoo_prefix_ci_32b/releases/download/release%2F2019-01-07T18at32plus00at00/gentoo_on_tmp-x86_2019-01-07T18at32plus00at00.tar.gz
 
 RUN tar xvf gentoo_on_tmp-*.tar.gz; rm gentoo_on_tmp-*.tar.gz
 
@@ -91,8 +91,12 @@ RUN $PREFIXED emaint sync -a
 # rosdep fails with
 # ERROR: cannot verify pypi.org's certificate, issued by 'CN=DigiCert SHA2 Extended Validation Server CA,OU=www.digicert.com,O=DigiCert Inc,C=US':
 #  Unable to locally verify the issuer's authority
-RUN $PREFIXED emerge dev-libs/openssl app-misc/ca-certificates net-misc/wget net-misc/curl
+# RUN $PREFIXED emerge dev-libs/openssl app-misc/ca-certificates net-misc/wget net-misc/curl
 RUN $PREFIXED update-ca-certificates
+
+# bug 674830
+RUN echo ">=sys-apps/dbus-1.12.10" >> $EPREFIX/etc/portage/package.mask
+RUN $PREFIXED emerge sys-apps/dbus
 
 # Build python with sqlite and bluetooth support
 # I find very surprising sqlite is not mandatory
