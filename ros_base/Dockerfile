@@ -37,6 +37,8 @@ RUN cat /proc/meminfo
 RUN df -h
 
 # Note that we always use the same one
+# This command will visit the latest release page and will look for the url of the artifact to download and download it
+# aria2c -x 10 http://github.com`curl -s -L https://github.com/awesomebytes/gentoo_prefix_ci_32b/releases/latest | grep "download/release" | cut -d '"' -f2`
 RUN aria2c -x 10 https://github.com/awesomebytes/gentoo_prefix_ci_32b/releases/download/release%2F2019-01-07T18at32plus00at00/gentoo_on_tmp-x86_2019-01-07T18at32plus00at00.tar.gz
 
 RUN tar xvf gentoo_on_tmp-*.tar.gz; rm gentoo_on_tmp-*.tar.gz
