@@ -11,6 +11,10 @@ COPY 0001-Remove-signals-to-enable-build.patch $EPREFIX/etc/portage/patches/ros-
 RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/tf
 COPY 0001-Remove-signals-so-to-build-with-boost-1.71.0.patch $EPREFIX/etc/portage/patches/ros-kinetic/tf/0001-Remove-signals-so-to-build-with-boost-1.71.0.patch
 
+RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/rviz
+COPY 0001-Rviz-remove-signals-as-boost-1.71.0-bug.patch $EPREFIX/etc/portage/patches/ros-kinetic/rviz/0001-Rviz-remove-signals-as-boost-1.71.0-bug.patch
+
+
 # Setup desktop (237 packages)
 RUN $PREFIXED emerge ros-kinetic/desktop || true
 
