@@ -8,6 +8,9 @@ RUN cd $EPREFIX/usr/local/portage/ros-kinetic/orocos_kdl; $PREFIXED ebuild *.ebu
 RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/tf2
 COPY 0001-Remove-signals-to-enable-build.patch $EPREFIX/etc/portage/patches/ros-kinetic/tf2
 
+RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/tf
+COPY 0001-Remove-signals-so-to-build-with-boost-1.71.0.patch $EPREFIX/etc/portage/patches/ros-kinetic/tf/0001-Remove-signals-so-to-build-with-boost-1.71.0.patch
+
 # Setup desktop (237 packages)
 RUN $PREFIXED emerge ros-kinetic/desktop || true
 
