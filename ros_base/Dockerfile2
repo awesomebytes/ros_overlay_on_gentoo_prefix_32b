@@ -10,7 +10,7 @@ RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/message_filters
 COPY 0001-Remove-signals-to-enable-compilation-to-go-thru-message-filters.patch $EPREFIX/etc/portage/patches/ros-kinetic/message_filters/0001-Remove-signals-to-enable-compilation-to-go-thru-message-filters.patch
 # Different problem, but also about boost 1.71.0, solution from https://github.com/Icinga/icinga2/pull/6230/files
 RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/actionlib
-COPY 0001-Use-proposed-fix-for-new-boost.patch $EPREFIX/etc/portage/patches/ros-kinetic/actionlib/0001-Use-proposed-fix-for-new-boost.patch
+COPY 0001-Boost-milliseconds-long-patch-on-floats.patch $EPREFIX/etc/portage/patches/ros-kinetic/actionlib/0001-Boost-milliseconds-long-patch-on-floats.patch
 
 # We got on emerging x11-libs/wxGTK-3.0.4-r302::gentoo
 # * Detected file collision(s):
