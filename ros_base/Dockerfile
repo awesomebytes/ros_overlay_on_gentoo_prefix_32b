@@ -19,27 +19,22 @@ RUN apt-get install build-essential -y
 
 # Nice tools to have
 RUN apt-get install bash-completion nano net-tools less iputils-ping vim emacs -y
-RUN apt-get install python-pip python-dev  -y
-RUN apt-get install wget -y
+RUN apt-get install python-pip python-dev -y
+# Download stuff
+RUN apt-get install wget curl aria2 -y
 # To enable ssh
 RUN apt-get install openssh-server -y
-# To enable adding to the clipboard from the shell
-RUN apt-get install xclip -y
-# To download stuff faster
-RUN apt-get install aria2 -y
+
 
 WORKDIR /home/user
 USER user
 
 # Let's get some specs of the machine that is running this job
-RUN cat /proc/cpuinfo
-RUN cat /proc/meminfo
-RUN df -h
+RUN cat /proc/cpuinfo; cat /proc/meminfo; df -h
 
 # Note that we always use the same one
 # This command will visit the latest release page and will look for the url of the artifact to download and download it
-# aria2c -x 10 http://github.com`curl -s -L https://github.com/awesomebytes/gentoo_prefix_ci_32b/releases/latest | grep "download/release" | cut -d '"' -f2`
-RUN aria2c -x 10 https://github.com/awesomebytes/gentoo_prefix_ci_32b/releases/download/release%2F2019-01-07T18at32plus00at00/gentoo_on_tmp-x86_2019-01-07T18at32plus00at00.tar.gz
+RUN aria2c -x 10 http://github.com`curl -s -L https://github.com/awesomebytes/gentoo_prefix_ci_32b/releases/latest | grep "download/release" | cut -d '"' -f2`
 
 RUN tar xvf gentoo_on_tmp-*.tar.gz; rm gentoo_on_tmp-*.tar.gz
 
@@ -62,6 +57,14 @@ RUN sed -i -e 's/j2/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPRE
 # Add extra jobs if we have enough CPUs
 RUN echo "EMERGE_DEFAULT_OPTS=\"--jobs $((`grep -c \^processor \/proc\/cpuinfo` / 2)) --load-average `grep -c \^processor \/proc\/cpuinfo`\"" >> $EPREFIX/etc/portage/make.conf
 RUN cat $EPREFIX/etc/portage/make.conf
+
+# dev-vcs/git-2.20.1 fails with (this command was already here, but executed after emerging git)
+# ERROR: cannot verify www.kernel.org's certificate
+# rosdep fails with
+# ERROR: cannot verify pypi.org's certificate, issued by 'CN=DigiCert SHA2 Extended Validation Server CA,OU=www.digicert.com,O=DigiCert Inc,C=US':
+#  Unable to locally verify the issuer's authority
+# RUN $PREFIXED emerge dev-libs/openssl app-misc/ca-certificates net-misc/wget net-misc/curl
+RUN $PREFIXED update-ca-certificates
 
 # Emerging git
 RUN $PREFIXED emerge dev-vcs/git
@@ -90,20 +93,16 @@ auto-sync = yes" > $EPREFIX/etc/portage/repos.conf/gentoo.conf
 # Sync everything
 RUN $PREFIXED emaint sync -a
 
-# rosdep fails with
-# ERROR: cannot verify pypi.org's certificate, issued by 'CN=DigiCert SHA2 Extended Validation Server CA,OU=www.digicert.com,O=DigiCert Inc,C=US':
-#  Unable to locally verify the issuer's authority
-# RUN $PREFIXED emerge dev-libs/openssl app-misc/ca-certificates net-misc/wget net-misc/curl
-RUN $PREFIXED update-ca-certificates
-
-# bug 674830
-RUN echo ">=sys-apps/dbus-1.12.10" >> $EPREFIX/etc/portage/package.mask
+# # bug 674830
+# RUN echo ">=sys-apps/dbus-1.12.10" >> $EPREFIX/etc/portage/package.mask
 RUN $PREFIXED emerge sys-apps/dbus
 
 # Build python with sqlite and bluetooth support
 # I find very surprising sqlite is not mandatory
 # Also enable PGO and LTO optimizations
 RUN echo "dev-lang/python sqlite bluetooth readline" >> $EPREFIX/etc/portage/package.use
+# To build succesfully the bluetooth support
+RUN echo "net-wireless/bluez -udev" >> $EPREFIX/etc/portage/package.use
 RUN EXTRA_ECONF="--enable-optimizations --with-lto" $PREFIXED emerge python:2.7[sqlite,bluetooth,readline] python:3.6[sqlite,bluetooth,readline]
 
 # By default it's python3 (option 1) but ROS uses Python 2.7 (as of now)
@@ -129,7 +128,8 @@ RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/catkin
 COPY 0001-Workaround-error-issue-ros-overlay-711.patch $EPREFIX/etc/portage/patches/ros-kinetic/catkin/0001-Workaround-error-issue-ros-overlay-711.patch
 
 # It's also needed to not run in problems later on (on ros-kinetic/desktop)
-RUN echo ">dev-util/cmake-3.12.3" >> /tmp/gentoo/etc/portage/package.mask
+# This can't be done anymore, the oldest version is 3.13.5 as of writing this comment
+# RUN echo ">dev-util/cmake-3.12.3" >> $EPREFIX/etc/portage/package.mask
 # Make sure we emerge that version
 RUN $PREFIXED emerge dev-util/cmake
 
@@ -148,22 +148,30 @@ RUN echo "# required by dev-python/rosdep-0.13.0::ros-overlay\n\
 # Make sure rosdep & catkin emerge OK
 RUN $PREFIXED emerge dev-python/rosdep ros-kinetic/catkin
 
+RUN echo "sys-libs/libcap -pam" >> $EPREFIX/etc/portage/package.use
+
 # Needed to emerge ros-kinetic/ros_base
-RUN echo "# required by dev-python/wxpython-3.0.2.0::gentoo\n\
+RUN echo "# required by ros-kinetic/roslib-1.14.6-r1::ros-overlay\n\
 # required by ros-kinetic/actionlib-1.11.13::ros-overlay\n\
 # required by ros-kinetic/ros_base-1.3.2::ros-overlay\n\
 # required by ros-kinetic/ros_base (argument)\n\
->=x11-libs/pango-1.42.4 X\n\
-# required by x11-libs/gtk+-3.24.1::gentoo\n\
-# required by x11-themes/adwaita-icon-theme-3.26.1::gentoo\n\
-# required by x11-libs/gtk+-2.24.32-r1::gentoo\n\
-# required by x11-themes/gtk-engines-adwaita-3.22.3::gentoo\n\
->=x11-libs/cairo-1.16.0-r2 X\n\
-# required by dev-python/wxpython-3.0.2.0::gentoo\n\
+>=dev-libs/boost-1.71.0 python\n\
+# required by dev-python/wxpython-4.0.6::gentoo\n\
 # required by ros-kinetic/actionlib-1.11.13::ros-overlay\n\
 # required by ros-kinetic/ros_base-1.3.2::ros-overlay\n\
 # required by ros-kinetic/ros_base (argument)\n\
->=x11-libs/wxGTK-3.0.4-r1:3.0 tiff" >> $EPREFIX/etc/portage/package.use
+>=x11-libs/wxGTK-3.0.4-r302 opengl sdl gstreamer tiff libnotify\n\
+# required by x11-libs/gtk+-3.24.11::gentoo\n\
+# required by x11-misc/notification-daemon-3.20.0::gentoo\n\
+# required by virtual/notification-daemon-0::gentoo[-kde,-gnome]\n\
+# required by x11-libs/libnotify-0.7.8::gentoo\n\
+# required by x11-libs/wxGTK-3.0.4-r302::gentoo[X,libnotify]\n\
+# required by dev-python/wxpython-4.0.6::gentoo\n\
+# required by ros-kinetic/actionlib-1.11.13::ros-overlay\n\
+# required by ros-kinetic/ros_base-1.3.2::ros-overlay\n\
+# required by ros-kinetic/ros_base (argument)\n\
+>=x11-libs/cairo-1.16.0-r3 X" >> $EPREFIX/etc/portage/package.use
+
 
 # Also needed to emerge ros-kinetic/ros_base
 RUN echo "# required by ros-kinetic/cpp_common-0.6.11::ros-overlay\n\
@@ -174,11 +182,9 @@ RUN echo "# required by ros-kinetic/cpp_common-0.6.11::ros-overlay\n\
 # required by ros-kinetic/ros_base (argument)\n\
 =dev-libs/console_bridge-9999 **" >> $EPREFIX/etc/portage/package.accept_keywords
 
-# Needed to emerge dev-python/pillow
-# both 5.3.0 & 5.2.0 don't emerge cause of
-# /usr/include/string.h:627:12: fatal error: bits/string.h: No such file or directory
-# #  include <bits/string.h>
-RUN echo ">=dev-python/pillow-5.2.0" >> $EPREFIX/etc/portage/package.mask
+# Emerge llvm already, as it takes 2h30 already, so we can
+# debug the next step (where we really emerge ros_base) easier and faster
+RUN $PREFIXED emerge sys-devel/llvm
 
 
 ENTRYPOINT ["/bin/bash"]

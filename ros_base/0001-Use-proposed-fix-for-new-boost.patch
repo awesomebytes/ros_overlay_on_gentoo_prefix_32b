@@ -1,0 +1,25 @@
+From 9eff3f3861ece4953fb3489bd28dd881b8c48120 Mon Sep 17 00:00:00 2001
+From: Sammy Pfeiffer <Sammy.Pfeiffer@student.uts.edu.au>
+Date: Wed, 4 Dec 2019 06:33:16 +0000
+Subject: [PATCH 1/1] Use proposed fix for new boost
+
+---
+ src/connection_monitor.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/connection_monitor.cpp b/src/connection_monitor.cpp
+index 19fe21a..dd3d16a 100644
+--- a/src/connection_monitor.cpp
++++ b/src/connection_monitor.cpp
+@@ -275,7 +275,7 @@ bool actionlib::ConnectionMonitor::waitForActionServerToStart(const ros::Duratio
+     }
+ 
+     check_connection_condition_.timed_wait(lock,
+-      boost::posix_time::milliseconds(time_left.toSec() * 1000.0f));
++      boost::posix_time::milliseconds(long(time_left.toSec() * 1000.0f)));
+   }
+ 
+   return isServerConnected();
+-- 
+2.24.0
+

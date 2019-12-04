@@ -1,6 +1,79 @@
 # Just Ubuntu 16.04 with a user called user and some basic tools
 FROM awesomebytes/roogp_32b_ros_kinetic_ros_base_setup
 
+# To be able to compile ros-kinetic/roscpp with boost 1.71.0
+# As reported here: https://github.com/ros/ros-overlay/issues/912
+RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/roscpp
+COPY 0001-Remove-signals-to-enable-compilation-to-go-thru.patch $EPREFIX/etc/portage/patches/ros-kinetic/roscpp/0001-Remove-signals-to-enable-compilation-to-go-thru.patch
+# Same but for ros-kinetic/message_filters
+RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/message_filters
+COPY 0001-Remove-signals-to-enable-compilation-to-go-thru-message-filters.patch $EPREFIX/etc/portage/patches/ros-kinetic/message_filters/0001-Remove-signals-to-enable-compilation-to-go-thru-message-filters.patch
+# Different problem, but also about boost 1.71.0, solution from https://github.com/Icinga/icinga2/pull/6230/files
+RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/actionlib
+COPY 0001-Use-proposed-fix-for-new-boost.patch $EPREFIX/etc/portage/patches/ros-kinetic/actionlib/0001-Use-proposed-fix-for-new-boost.patch
+
+# We got on emerging x11-libs/wxGTK-3.0.4-r302::gentoo
+# * Detected file collision(s):
+# * 
+# *  /tmp/gentoo/usr/bin/wx-config
+# *  /tmp/gentoo/usr/bin/wxrc
+# Which may be from app-eselect/eselect-wxwidgets-20180529:0::gentoo
+# But it is not installed at 10 packages away of fully emerging ros_base. Weird
+# Via emerge app-portage/gentoolkit
+# and doing 'equery files app-eselect/eselect-wxwidgets'
+# I found that these files are effectively owned by eselect-wxwidgets
+# This has been reported in: https://bugs.gentoo.org/590124
+# So I'll just... move the binaries and ignore this problem for now
+# I also make sure app-eselect/eselect-wxwidgets is emerged, so this ugly patch works
+RUN $PREFIXED emerge app-eselect/eselect-wxwidgets
+RUN mv $EPREFIX/usr/bin/wx-config $EPREFIX/usr/bin/wx-config_bug_590124
+RUN mv $EPREFIX/usr/bin/wxrc $EPREFIX/usr/bin/wxrc_bug_590124
+
+# wxpython-4.0.6 refuses to emerge... so we just go back to the previous version
+#  * python3_6: running distutils-r1_run_phase python_compile
+# ./regen.sh: line 114: /usr/bin/doxygen: No such file or directory
+# cat: doxygen.log: No such file or directory
+# Will build using: "/tmp/gentoo/usr/bin/python3.6"
+# 3.6.9 (default, Dec  3 2019, 14:47:25) 
+# [GCC 9.2.0]
+# Python's architecture is 64bit
+# cfg.VERSION: 4.0.6
+
+# Running command: dox
+# bash ./regen.sh xml
+# Finished command: dox (0.17s)
+# Running command: etg
+# Traceback (most recent call last):
+#   File "build.py", line 2027, in <module>
+#     main(sys.argv[1:])
+#   File "build.py", line 196, in main
+#     function(options, args)
+#   File "build.py", line 922, in cmd_etg
+#     assert os.path.exists(cfg.DOXY_XML_DIR), "Doxygen XML folder not found: " + cfg.DOXY_XML_DIR
+# AssertionError: Doxygen XML folder not found: /home/user/gentoo/var/tmp/portage/dev-python/wxpython-4.0.6/work/wxPython-4.0.6/ext/wxWidgets/docs/doxygen/out/xml
+# Finished command: etg (0.4s)
+#  * ERROR: dev-python/wxpython-4.0.6::gentoo failed (compile phase):
+#  *   (no error message)
+RUN echo ">=dev-python/wxpython-4.0.6" >> $EPREFIX/etc/portage/package.mask
+RUN echo "# required by dev-python/wxpython-3.0.2.0::gentoo\n\
+# required by ros-kinetic/actionlib-1.11.13::ros-overlay\n\
+# required by ros-kinetic/ros_base-1.3.2::ros-overlay\n\
+# required by ros-kinetic/ros_base (argument)\n\
+>=x11-libs/wxGTK-3.0.4-r2:3.0 tiff\n\
+# required by dev-python/wxpython-3.0.2.0::gentoo\n\
+# required by ros-kinetic/actionlib-1.11.13::ros-overlay\n\
+# required by ros-kinetic/ros_base-1.3.2::ros-overlay\n\
+# required by ros-kinetic/ros_base (argument)\n\
+>=x11-libs/pango-1.42.4-r2 X" >> $EPREFIX/etc/portage/package.use
+
+
+# We also found:
+# //Starting build: Wed Dec  4 06:34:50 -00 2019
+# //Options: --prefix='/tmp/gentoo/usr' --xc-host='sh /home/user/gentoo/var/tmp/portage/dev-lisp/sbcl-1.5.8/work/sbcl-binary/run-sbcl.sh --no-sysinit --no-userinit --disable-debugger'
+# /home/user/gentoo/var/tmp/portage/dev-lisp/sbcl-1.5.8/work/sbcl-binary/src/runtime/sbcl: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.28' not found (required by /home/user/gentoo/var/tmp/portage/dev-lisp/sbcl-1.5.8/work/sbcl-binary/src/runtime/sbcl)
+# So we revert to stable version
+RUN echo ">=dev-lisp/sbcl-1.5.0" >> $EPREFIX/etc/portage/package.mask
+
 # Setup the basic ROS
 RUN $PREFIXED emerge ros-kinetic/ros_base || true
 # Apparently dev-lisp/sbcl-1.4.13 sometimes may fail in some of the tests
