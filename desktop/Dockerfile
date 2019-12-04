@@ -4,7 +4,7 @@ FROM awesomebytes/roogp_32b_ros_kinetic_ros_base
 # To build qt successfully
 RUN echo "# For ROS stuff that uses qt\n\
 # dev-qt/qtgui udev\n\
-dev-qt/qtgui -libinput" >> /tmp/gentoo/etc/portage/package.use
+dev-qt/qtgui -libinput -udev" >> /tmp/gentoo/etc/portage/package.use
 
 RUN echo ">=dev-libs/libpcre2-10.32 pcre16" >> /tmp/gentoo/etc/portage/package.use 
 
@@ -100,9 +100,10 @@ RUN echo "dev-qt/qtwebkit-5.212.0_pre20180120" >> $EPREFIX/etc/portage/profile/p
 
 
 # For ros-kinetic/opencv3 as reported in https://github.com/ros/ros-overlay/issues/726
-RUN echo ">=dev-games/ogre-1.10.12 experimental" >> $EPREFIX/etc/portage/package.use
-RUN sed -i 's/-DOGRE_NODE_STORAGE_LEGACY=no/-DOGRE_NODE_STORAGE_LEGACY=yes/g' $EPREFIX/usr/portage/dev-games/ogre/ogre-1.10.12.ebuild &&\
-    $PREFIXED ebuild $EPREFIX/usr/portage/dev-games/ogre/ogre-1.10.12.ebuild manifest
+# RUN echo ">=dev-games/ogre-1.10.12 experimental" >> $EPREFIX/etc/portage/package.use
+# RUN sed -i 's/-DOGRE_NODE_STORAGE_LEGACY=no/-DOGRE_NODE_STORAGE_LEGACY=yes/g' $EPREFIX/usr/portage/dev-games/ogre/ogre-1.10.12.ebuild &&\
+#     $PREFIXED ebuild $EPREFIX/usr/portage/dev-games/ogre/ogre-1.10.12.ebuild manifest
+RUN echo ">dev-games/ogre-1.9.0-r1" >> $EPREFIX/etc/portage/package.mask
 RUN $PREFIXED emerge dev-games/ogre
 
 # As reported here https://github.com/ros/ros-overlay/issues/581
