@@ -77,22 +77,30 @@ RUN mkdir -p /tmp/gentoo/etc/portage/profile && \
 # and I found no way of emerging it
 RUN echo ">media-libs/libv4l-1.10.1" >> /tmp/gentoo/etc/portage/package.mask
 
-# For https://bugs.gentoo.org/654804
-# TODO: make a repository for these kind of patches...
-# https://wiki.gentoo.org/wiki/Handbook:AMD64/Portage/CustomTree#Defining_a_custom_repository
-RUN sed -i 's/local tmp_root=\${D%\/}\/tmp/local tmp_root=\${ED%\/}\/tmp/g' /tmp/gentoo/usr/portage/dev-python/PyQt5/PyQt5-5.10.1-r1.ebuild
-RUN $PREFIXED ebuild /tmp/gentoo/usr/portage/dev-python/PyQt5/PyQt5-5.10.1-r1.ebuild manifest
+# # For https://bugs.gentoo.org/654804
+# # TODO: make a repository for these kind of patches...
+# # https://wiki.gentoo.org/wiki/Handbook:AMD64/Portage/CustomTree#Defining_a_custom_repository
+# RUN sed -i 's/local tmp_root=\${D%\/}\/tmp/local tmp_root=\${ED%\/}\/tmp/g' /tmp/gentoo/usr/portage/dev-python/PyQt5/PyQt5-5.10.1-r1.ebuild
+# RUN $PREFIXED ebuild /tmp/gentoo/usr/portage/dev-python/PyQt5/PyQt5-5.10.1-r1.ebuild manifest
 
 # If we can go faster, try
 RUN sed -i -e 's/j1/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPREFIX/etc/portage/make.conf
 RUN sed -i -e 's/j2/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPREFIX/etc/portage/make.conf
 
-# Patch building Qt inside of a docker container https://bugs.gentoo.org/672602
-RUN mkdir -p $EPREFIX/etc/portage/patches/dev-qt/qtcore-5.11.3 &&\
-    cd $EPREFIX/etc/portage/patches/dev-qt/qtcore-5.11.3 &&\
-    wget https://gist.githubusercontent.com/awesomebytes/856d1d1b0d267f90241451d933a17867/raw/0d4f5eb1095999ffa1265ee6b59ecb33833e63c7/0001-Overcome-statx-libseccomp-issue-with-running-inside-.patch
+# # Patch building Qt inside of a docker container https://bugs.gentoo.org/672602
+# RUN mkdir -p $EPREFIX/etc/portage/patches/dev-qt/qtcore-5.11.3 &&\
+#     cd $EPREFIX/etc/portage/patches/dev-qt/qtcore-5.11.3 &&\
+#     wget https://gist.githubusercontent.com/awesomebytes/856d1d1b0d267f90241451d933a17867/raw/0d4f5eb1095999ffa1265ee6b59ecb33833e63c7/0001-Overcome-statx-libseccomp-issue-with-running-inside-.patch
 # For https://github.com/ros/ros-overlay/issues/729
-RUN echo ">=dev-python/PyQt5-5.10.1-r1 gui widgets" >> /tmp/gentoo/etc/portage/package.use
+RUN echo ">=dev-python/PyQt5-5.10.1-r1 gui widgets" >> $EPREFIX/etc/portage/package.use
+
+# dev-qt/qtcore 5.12 & 5.13 has some error that causes later on ros-kinetic/qt_gui_cpp
+# to fail emerging with
+# [very long line] ... -lQt5Gui $[QT_INSTALL_LIBS]/libQt5Core.so -lpthread  ...
+# x86_64-pc-linux-gnu-g++: error: 0/libQt5Core.so: No such file or directory
+# So we emerge it and then we patch the problem (an un-substituted symbol)
+RUN $PREFIXED emerge dev-qt/qtcore
+RUN qt_install_libs_path=`qmake -query QT_INSTALL_LIBS`; sed -i 's@$$\[QT_INSTALL_LIBS\]@'$qt_install_libs_path'@' $EPREFIX/usr/lib/libQt5Gui.prl
 
 # cause of https://github.com/ros/ros-overlay/issues/725
 RUN $PREFIXED emerge dev-qt/qttest dev-qt/qtconcurrent dev-qt/qtwidgets dev-python/PyQt5[gui,widgets]
