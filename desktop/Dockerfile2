@@ -14,6 +14,18 @@ COPY 0001-Remove-signals-so-to-build-with-boost-1.71.0.patch $EPREFIX/etc/portag
 RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/rviz
 COPY 0001-Rviz-remove-signals-as-boost-1.71.0-bug.patch $EPREFIX/etc/portage/patches/ros-kinetic/rviz/0001-Rviz-remove-signals-as-boost-1.71.0-bug.patch
 
+# Even though it's not part of desktop, perception needs it
+# TODO: move it to a perception release
+RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/laser_assembler
+COPY 0001-laser_assembler-remove-signals-for-boost-1.71.9.patch $EPREFIX/etc/portage/patches/ros-kinetic/laser_assembler/0001-laser_assembler-remove-signals-for-boost-1.71.9.patch
+
+# Same as laser_assembler but for laser_filters
+RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/laser_filters
+COPY 0001-laser_filters-signals-boost-1.71.0-patch.patch $EPREFIX/etc/portage/patches/ros-kinetic/laser_filters/0001-laser_filters-signals-boost-1.71.0-patch.patch
+
+# Same for image_view as the laser_assembler
+RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/image_view
+COPY 0001-image_view-signals-boost-1.71.0-bug-fix.patch $EPREFIX/etc/portage/patches/ros-kinetic/image_view/0001-image_view-signals-boost-1.71.0-bug-fix.patch
 
 # Setup desktop (237 packages)
 RUN $PREFIXED emerge ros-kinetic/desktop || true
