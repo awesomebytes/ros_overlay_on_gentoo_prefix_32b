@@ -12,9 +12,6 @@ RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/image_view &&\
 # desktop_full includes desktop, perception & simulators
 RUN $PREFIXED emerge ros-kinetic/perception
 
-# Workaround (bug https://bugs.gentoo.org/672598)
-RUN sed -i 's/${D}/${ED}/g' /tmp/gentoo/usr/portage/dev-libs/libspnav/libspnav-0.2.2.ebuild &&\
-    $PREFIXED ebuild $EPREFIX/usr/portage/dev-libs/libspnav/libspnav-0.2.2.ebuild manifest
 
 RUN echo "# required by dev-lang/ruby-2.5.3::gentoo\n\
 # required by dev-libs/sdformat-6.1.0::gentoo\n\
