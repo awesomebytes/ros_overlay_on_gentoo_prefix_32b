@@ -100,15 +100,14 @@ RUN echo ">=dev-python/PyQt5-5.10.1-r1 gui widgets" >> $EPREFIX/etc/portage/pack
 # x86_64-pc-linux-gnu-g++: error: 0/libQt5Core.so: No such file or directory
 # So we emerge it and then we patch the problem (an un-substituted symbol)
 RUN $PREFIXED emerge dev-qt/qtcore
-RUN cd /tmp/gentoo/usr/bin && \
-    unlink qmake && \
-    ln -s /tmp/gentoo/usr/lib64/qt5/bin/qmake qmake
-RUN qt_install_libs_path=`qmake -query QT_INSTALL_LIBS`; sed -i 's@$$\[QT_INSTALL_LIBS\]@'$qt_install_libs_path'@' $EPREFIX/usr/lib/libQt5Gui.prl
 
 # cause of https://github.com/ros/ros-overlay/issues/725
 RUN $PREFIXED emerge dev-qt/qttest dev-qt/qtconcurrent dev-qt/qtwidgets dev-python/PyQt5[gui,widgets]
 RUN echo "dev-qt/qtwebkit-5.212.0_pre20180120" >> $EPREFIX/etc/portage/profile/package.provided
-
+RUN cd /tmp/gentoo/usr/bin && \
+    unlink qmake && \
+    ln -s /tmp/gentoo/usr/lib64/qt5/bin/qmake qmake
+RUN qt_install_libs_path=`qmake -query QT_INSTALL_LIBS`; sed -i 's@$$\[QT_INSTALL_LIBS\]@'$qt_install_libs_path'@' $EPREFIX/usr/lib/libQt5Gui.prl
 
 # For ros-kinetic/opencv3 as reported in https://github.com/ros/ros-overlay/issues/726
 # RUN echo ">=dev-games/ogre-1.10.12 experimental" >> $EPREFIX/etc/portage/package.use
