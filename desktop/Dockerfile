@@ -107,7 +107,8 @@ RUN echo "dev-qt/qtwebkit-5.212.0_pre20180120" >> $EPREFIX/etc/portage/profile/p
 RUN cd /tmp/gentoo/usr/bin && \
     unlink qmake && \
     ln -s /tmp/gentoo/usr/lib64/qt5/bin/qmake qmake
-RUN qt_install_libs_path=`qmake -query QT_INSTALL_LIBS`; sed -i 's@$$\[QT_INSTALL_LIBS\]@'$qt_install_libs_path'@' $EPREFIX/usr/lib/libQt5Gui.prl
+RUN qt_install_libs_path=/tmp/gentoo/usr/lib; sed -i 's@$$\[QT_INSTALL_LIBS\]@'$qt_install_libs_path'@' $EPREFIX/usr/lib/libQt5Gui.prl
+RUN cd /tmp/gentoo/usr/lib/cmake/Qt5Gui; find ./ -type f -exec sed -i -e 's@/home/user@/tmp@g' {} \;
 
 # For ros-kinetic/opencv3 as reported in https://github.com/ros/ros-overlay/issues/726
 # RUN echo ">=dev-games/ogre-1.10.12 experimental" >> $EPREFIX/etc/portage/package.use
