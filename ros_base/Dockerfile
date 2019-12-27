@@ -122,11 +122,6 @@ ros-lunar/* PYTHON_TARGETS: -* python2_7\n\
 ros-lunar/* PYTHON_SINGLE_TARGET: -* python2_7\n\
 " >> $EPREFIX/etc/portage/package.use
 
-# Currently there is a bug that wont allow to compile rostime and others:
-# https://github.com/ros/ros-overlay/issues/711
-RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/catkin
-COPY 0001-Workaround-error-issue-ros-overlay-711.patch $EPREFIX/etc/portage/patches/ros-kinetic/catkin/0001-Workaround-error-issue-ros-overlay-711.patch
-
 # It's also needed to not run in problems later on (on ros-kinetic/desktop)
 # This can't be done anymore, the oldest version is 3.13.5 as of writing this comment
 # RUN echo ">dev-util/cmake-3.12.3" >> $EPREFIX/etc/portage/package.mask
@@ -146,6 +141,10 @@ RUN echo "# required by dev-python/rosdep-0.13.0::ros-overlay\n\
 =dev-python/rospkg-9999 **" >> $EPREFIX/etc/portage/package.accept_keywords
 
 # Make sure rosdep & catkin emerge OK
+# Until https://github.com/ros/ros-overlay/pull/934 is merged we need a little patch
+RUN cd $EPREFIX/usr/local/portage/ros-kinetic/catkin &&\
+    rm files/0001-Workaround-error-issue-ros-overlay-711.patch &&\
+    $PREFIXED ebuild catkin-0.7.20-r1.ebuild manifest
 RUN $PREFIXED emerge dev-python/rosdep ros-kinetic/catkin
 
 RUN echo "sys-libs/libcap -pam" >> $EPREFIX/etc/portage/package.use
