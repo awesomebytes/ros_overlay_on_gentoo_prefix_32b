@@ -27,6 +27,16 @@ COPY 0001-laser_filters-signals-boost-1.71.0-patch.patch $EPREFIX/etc/portage/pa
 RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/image_view
 COPY 0001-image_view-signals-boost-1.71.0-bug-fix.patch $EPREFIX/etc/portage/patches/ros-kinetic/image_view/0001-image_view-signals-boost-1.71.0-bug-fix.patch
 
+# Numpy doesn't support Python 2.7 anymore
+# and we are still pending on migrating to Python 3 (as ROS is)
+# ros-kinetic/opencv_bridge fails to emerge with:
+# ImportError: No module named numpy
+# CMake Error at src/CMakeLists.txt:25 (message):
+#   Could not determine the NumPy include directory, verify that NumPy was
+#   installed correctly.
+# So we install the latest Python2 compatible numpy version
+RUN echo ">dev-python/numpy-1.17" >> $EPREFIX/etc/portage/package.mask
+
 # Setup desktop (237 packages)
 RUN $PREFIXED emerge ros-kinetic/desktop || true
 
