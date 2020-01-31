@@ -35,7 +35,8 @@ COPY 0001-image_view-signals-boost-1.71.0-bug-fix.patch $EPREFIX/etc/portage/pat
 #   Could not determine the NumPy include directory, verify that NumPy was
 #   installed correctly.
 # So we install the latest Python2 compatible numpy version
-RUN echo ">dev-python/numpy-1.17" >> $EPREFIX/etc/portage/package.mask
+RUN echo ">dev-python/numpy-1.17" >> $EPREFIX/etc/portage/package.mask && \
+    $PREFIXED emerge dev-python/numpy
 
 # Until https://github.com/ros/ros-overlay/issues/947 is resolved
 RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/python_qt_binding && \
