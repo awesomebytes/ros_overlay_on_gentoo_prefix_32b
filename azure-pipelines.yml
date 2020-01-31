@@ -8,8 +8,9 @@ jobs:
   - job: "build_ros_kinetic_ros_base_1"
     timeoutInMinutes: 0
 
-    pool:
-      vmImage: 'Ubuntu 16.04'
+    pool: magiclab
+    # pool:
+    #   vmImage: 'Ubuntu 16.04'
 
     variables:
       docker_image_name: roogp_32b_ros_kinetic_ros_base_setup
@@ -46,8 +47,9 @@ jobs:
     timeoutInMinutes: 0
     dependsOn: "build_ros_kinetic_ros_base_1"
 
-    pool:
-      vmImage: 'Ubuntu 16.04'
+    pool: magiclab
+    # pool:
+    #   vmImage: 'Ubuntu 16.04'
 
     variables:
       docker_image_name: roogp_32b_ros_kinetic_ros_base
@@ -84,8 +86,9 @@ jobs:
     timeoutInMinutes: 0
     dependsOn: "build_ros_kinetic_ros_base_2"
 
-    pool:
-      vmImage: 'Ubuntu 16.04'
+    pool: magiclab
+    # pool:
+    #   vmImage: 'Ubuntu 16.04'
 
     variables:
       docker_image_name: roogp_32b_ros_kinetic_ros_base_package_stage
@@ -150,8 +153,9 @@ jobs:
     timeoutInMinutes: 0
     dependsOn: "package_stage_ros_base"
 
-    pool:
-      vmImage: 'Ubuntu 16.04'
+    pool: magiclab
+    # pool:
+    #   vmImage: 'Ubuntu 16.04'
 
     variables:
       docker_image_name: roogp_32b_ros_kinetic_desktop_1
@@ -187,8 +191,9 @@ jobs:
     timeoutInMinutes: 0
     dependsOn: "build_ros_kinetic_desktop_1"
 
-    pool:
-      vmImage: 'Ubuntu 16.04'
+    pool: magiclab
+    # pool:
+    #   vmImage: 'Ubuntu 16.04'
 
     variables:
       docker_image_name: roogp_32b_ros_kinetic_desktop_2
@@ -222,8 +227,9 @@ jobs:
     timeoutInMinutes: 0
     dependsOn: "build_ros_kinetic_desktop_2"
 
-    pool:
-      vmImage: 'Ubuntu 16.04'
+    pool: magiclab
+    # pool:
+    #   vmImage: 'Ubuntu 16.04'
 
     variables:
       docker_image_name: roogp_32b_ros_kinetic_desktop_package_stage
