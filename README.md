@@ -1,7 +1,7 @@
 # ros_overlay_on_gentoo_prefix_32b
 [![Build Status](https://dev.azure.com/12719821/12719821/_apis/build/status/awesomebytes.ros_overlay_on_gentoo_prefix_32b)](https://dev.azure.com/12719821/12719821/_build/latest?definitionId=6)
 
-Building ROS over Gentoo Prefix (on `/tmp/gentoo` for amd64 over a Docker image of Ubuntu 16.04).
+Building ROS over Gentoo Prefix (on `/tmp/gentoo` for x86 over a Docker image of Ubuntu 16.04) thanks to [ros-overlay](https://github.com/ros/ros-overlay).
 
 This is a project closely related to [Gentoo Prefix CI 32b](https://github.com/awesomebytes/gentoo_prefix_ci_32b).
 
@@ -16,18 +16,20 @@ Ready-to-use releases: https://github.com/awesomebytes/ros_overlay_on_gentoo_pre
 
 # Try it
 
-Go to https://github.com/awesomebytes/ros_overlay_on_gentoo_prefix/releases and download the latest release (ros-kinetic/ros_base is 2GB~), it's divided in parts.
+Go to https://github.com/awesomebytes/ros_overlay_on_gentoo_prefix_32b/releases and download the latest release of your choice (ros-kinetic/ros_base is 2GB~), it's divided in 1GB parts.
 
-Put together and extract (4.4GB~):
+Put the parts together and extract (4.4GB~):
 ```
 cd ~
 cat gentoo_on_tmp* > gentoo_on_tmp.tar.gz
-tar xvf gentoo_on_tmp.tar.
+tar xvf gentoo_on_tmp.tar.gz
 # Probably delete the intermediate files
 rm gentoo_on_tmp*
 # Just enter the Gentoo Prefix environment
 ./gentoo/startprefix
 ```
+
+ros-kinetic/desktop is ~4GB, extracted ~6GB.
 
 # WIP
 
