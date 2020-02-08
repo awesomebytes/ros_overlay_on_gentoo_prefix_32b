@@ -141,11 +141,10 @@ RUN echo "# required by dev-python/rosdep-0.13.0::ros-overlay\n\
 =dev-python/rospkg-9999 **" >> $EPREFIX/etc/portage/package.accept_keywords
 
 # Make sure rosdep & catkin emerge OK
-# Until https://github.com/ros/ros-overlay/pull/934 is merged we need a little patch
+# Higher versions of rospkg (out of ros-overlay) unsupport python2
+# ros-kinetic/nodelet_topic_tools is the first to fail if rospkg is not in py2
+RUN echo ">=dev-python/rospkg-1.8" >> $EPREFIX/etc/portage/package.mask
 RUN echo ">=dev-python/rosdep-0.13.0 -python_targets_python2_7" >> $EPREFIX/etc/portage/package.use
-RUN cd $EPREFIX/usr/local/portage/ros-kinetic/catkin &&\
-    rm files/0001-Workaround-error-issue-ros-overlay-711.patch &&\
-    $PREFIXED ebuild $EPREFIX//usr/local/portage/ros-kinetic/catkin/catkin-0.7.20-r1.ebuild manifest
 RUN $PREFIXED emerge dev-python/rosdep ros-kinetic/catkin
 
 RUN echo "sys-libs/libcap -pam" >> $EPREFIX/etc/portage/package.use
