@@ -144,7 +144,10 @@ RUN echo "# required by dev-python/rosdep-0.13.0::ros-overlay\n\
 # Higher versions of rospkg (out of ros-overlay) unsupport python2
 # ros-kinetic/nodelet_topic_tools is the first to fail if rospkg is not in py2
 RUN echo ">=dev-python/rospkg-1.8" >> $EPREFIX/etc/portage/package.mask
-RUN echo ">=dev-python/rosdep-0.13.0 -python_targets_python2_7" >> $EPREFIX/etc/portage/package.use
+# Until https://github.com/ros/ros-overlay/pull/952 is merged
+RUN rm $EPREFIX/tmp/usr/local/portage/dev-python/rosdistro/Manifest && \
+    $PREFIXED ebuild $EPREFIX/tmp/usr/local/portage/dev-python/rosdistro/*.ebuild manifest
+RUN echo ">=dev-python/rosdep-0.13.0 -python_targets_python3_6" >> $EPREFIX/etc/portage/package.use
 RUN $PREFIXED emerge dev-python/rosdep ros-kinetic/catkin
 
 RUN echo "sys-libs/libcap -pam" >> $EPREFIX/etc/portage/package.use
