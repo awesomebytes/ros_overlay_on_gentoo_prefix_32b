@@ -147,6 +147,7 @@ RUN echo ">=dev-python/rospkg-1.8" >> $EPREFIX/etc/portage/package.mask
 # Until https://github.com/ros/ros-overlay/pull/952 is merged
 RUN rm $EPREFIX/usr/local/portage/dev-python/rosdistro/Manifest && \
     $PREFIXED ebuild $EPREFIX/usr/local/portage/dev-python/rosdistro/*.ebuild manifest
+RUN echo ">=dev-python/rosdistro-9999 -python_targets_python3_6" >> $EPREFIX/etc/portage/package.use
 RUN echo ">=dev-python/rosdep-0.13.0 -python_targets_python3_6" >> $EPREFIX/etc/portage/package.use
 RUN $PREFIXED emerge dev-python/rosdep ros-kinetic/catkin
 
