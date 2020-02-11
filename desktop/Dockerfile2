@@ -5,27 +5,6 @@ FROM awesomebytes/roogp_32b_ros_kinetic_desktop_1
 RUN rm $EPREFIX/usr/local/portage/ros-kinetic/orocos_kdl/files/*
 RUN RUN cd $EPREFIX/usr/local/portage/ros-kinetic/orocos_kdl; $PREFIXED ebuild $EPREFIX/usr/local/portage/ros-kinetic/orocos_kdl/*.ebuild manifest
 
-RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/tf2
-COPY 0001-Remove-signals-to-enable-build.patch $EPREFIX/etc/portage/patches/ros-kinetic/tf2
-
-RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/tf
-COPY 0001-Remove-signals-so-to-build-with-boost-1.71.0.patch $EPREFIX/etc/portage/patches/ros-kinetic/tf/0001-Remove-signals-so-to-build-with-boost-1.71.0.patch
-
-RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/rviz
-COPY 0001-Rviz-remove-signals-as-boost-1.71.0-bug.patch $EPREFIX/etc/portage/patches/ros-kinetic/rviz/0001-Rviz-remove-signals-as-boost-1.71.0-bug.patch
-
-# Even though it's not part of desktop, perception needs it
-# TODO: move it to a perception release
-RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/laser_assembler
-COPY 0001-laser_assembler-remove-signals-for-boost-1.71.9.patch $EPREFIX/etc/portage/patches/ros-kinetic/laser_assembler/0001-laser_assembler-remove-signals-for-boost-1.71.9.patch
-
-# Same as laser_assembler but for laser_filters
-RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/laser_filters
-COPY 0001-laser_filters-signals-boost-1.71.0-patch.patch $EPREFIX/etc/portage/patches/ros-kinetic/laser_filters/0001-laser_filters-signals-boost-1.71.0-patch.patch
-
-# Same for image_view as the laser_assembler
-RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/image_view
-COPY 0001-image_view-signals-boost-1.71.0-bug-fix.patch $EPREFIX/etc/portage/patches/ros-kinetic/image_view/0001-image_view-signals-boost-1.71.0-bug-fix.patch
 
 # Numpy doesn't support Python 2.7 anymore
 # and we are still pending on migrating to Python 3 (as ROS is)
@@ -38,9 +17,8 @@ COPY 0001-image_view-signals-boost-1.71.0-bug-fix.patch $EPREFIX/etc/portage/pat
 RUN echo ">dev-python/numpy-1.17" >> $EPREFIX/etc/portage/package.mask && \
     $PREFIXED emerge dev-python/numpy
 
-# Until https://github.com/ros/ros-overlay/issues/947 is resolved
-RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/python_qt_binding && \
-    wget -P $EPREFIX/etc/portage/patches/ros-kinetic/python_qt_binding https://github.com/ros-visualization/python_qt_binding/commit/0a4893791039d5c3f851ee7bc2de832209d52f6d.patch
+# Required by ros-kinetic/desktop
+RUN echo ">=dev-python/PyQt5-5.14.1 webkit opengl" >> $EPREFIX/etc/portage/package.use
 
 # Setup desktop (237 packages)
 RUN $PREFIXED emerge ros-kinetic/desktop || true
