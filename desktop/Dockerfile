@@ -92,7 +92,7 @@ RUN sed -i -e 's/j2/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPRE
 #     cd $EPREFIX/etc/portage/patches/dev-qt/qtcore-5.11.3 &&\
 #     wget https://gist.githubusercontent.com/awesomebytes/856d1d1b0d267f90241451d933a17867/raw/0d4f5eb1095999ffa1265ee6b59ecb33833e63c7/0001-Overcome-statx-libseccomp-issue-with-running-inside-.patch
 # For https://github.com/ros/ros-overlay/issues/729
-RUN echo ">=dev-python/PyQt5-5.10.1-r1 gui widgets webkit networking printsupport" >> $EPREFIX/etc/portage/package.use
+RUN echo ">=dev-python/PyQt5-5.10.1-r1 gui widgets webkit network printsupport opengl" >> $EPREFIX/etc/portage/package.use
 
 RUN echo "# required by virtual/rubygems-16::gentoo[ruby_targets_ruby27]\n\
 # required by dev-ruby/racc-1.4.16-r1::gentoo[-test,ruby_targets_ruby24]\n\
