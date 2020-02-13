@@ -94,6 +94,40 @@ RUN sed -i -e 's/j2/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPRE
 # For https://github.com/ros/ros-overlay/issues/729
 RUN echo ">=dev-python/PyQt5-5.10.1-r1 gui widgets webkit networking printsupport" >> $EPREFIX/etc/portage/package.use
 
+RUN echo "# required by virtual/rubygems-16::gentoo[ruby_targets_ruby27]\n\
+# required by dev-ruby/racc-1.4.16-r1::gentoo[-test,ruby_targets_ruby24]\n\
+# required by dev-ruby/rdoc-6.2.0::gentoo[ruby_targets_ruby25]\n\
+# required by dev-lang/ruby-2.7.0::gentoo[rdoc]\n\
+# required by dev-ruby/bundler-2.1.4::gentoo[ruby_targets_ruby25]\n\
+>=dev-ruby/minitest-5.14.0 ruby_targets_ruby27\n\
+# required by dev-lang/ruby-2.7.0::gentoo\n\
+# required by virtual/rubygems-16::gentoo[ruby_targets_ruby27]\n\
+# required by dev-ruby/racc-1.4.16-r1::gentoo[-test,ruby_targets_ruby24]\n\
+# required by dev-ruby/rdoc-6.2.0::gentoo[ruby_targets_ruby25]\n\
+# required by dev-lang/ruby-2.5.7::gentoo[rdoc]\n\
+# required by dev-ruby/bundler-2.1.4::gentoo[ruby_targets_ruby25]\n\
+>=dev-ruby/test-unit-3.3.5 ruby_targets_ruby27\n\
+# required by dev-lang/ruby-2.7.0::gentoo\n\
+# required by virtual/rubygems-16::gentoo[ruby_targets_ruby27]\n\
+# required by dev-ruby/racc-1.4.16-r1::gentoo[-test,ruby_targets_ruby24]\n\
+# required by dev-ruby/rdoc-6.2.0::gentoo[ruby_targets_ruby25]\n\
+# required by dev-lang/ruby-2.5.7::gentoo[rdoc]\n\
+# required by dev-ruby/bundler-2.1.4::gentoo[ruby_targets_ruby25]\n\
+>=dev-ruby/xmlrpc-0.3.0 ruby_targets_ruby27\n\
+# required by dev-lang/ruby-2.7.0::gentoo\n\
+# required by virtual/rubygems-16::gentoo[ruby_targets_ruby27]\n\
+# required by dev-ruby/racc-1.4.16-r1::gentoo[-test,ruby_targets_ruby24]\n\
+# required by dev-ruby/rdoc-6.2.0::gentoo[ruby_targets_ruby25]\n\
+# required by dev-lang/ruby-2.5.7::gentoo[rdoc]\n\
+# required by dev-ruby/xmlrpc-0.3.0::gentoo[ruby_targets_ruby25]\n\
+# required by dev-lang/ruby-2.4.9::gentoo\n\
+# required by dev-ruby/did_you_mean-1.1.2::gentoo[ruby_targets_ruby24]\n\
+>=dev-ruby/bundler-2.1.4 ruby_targets_ruby27\n\
+# required by dev-ruby/bundler-2.1.4::gentoo[-test,ruby_targets_ruby27]\n\
+# required by dev-lang/ruby-2.7.0::gentoo\n\
+# required by dev-ruby/did_you_mean-1.4.0::gentoo[ruby_targets_ruby27]\n\
+>=virtual/rubygems-16 ruby_targets_ruby27" >> $EPREFIX/etc/portage/package.use
+
 # dev-qt/qtcore 5.12 & 5.13 has some error that causes later on ros-kinetic/qt_gui_cpp
 # to fail emerging with
 # [very long line] ... -lQt5Gui $[QT_INSTALL_LIBS]/libQt5Core.so -lpthread  ...
