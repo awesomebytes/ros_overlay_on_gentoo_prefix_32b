@@ -126,7 +126,39 @@ RUN echo "# required by virtual/rubygems-16::gentoo[ruby_targets_ruby27]\n\
 # required by dev-ruby/bundler-2.1.4::gentoo[-test,ruby_targets_ruby27]\n\
 # required by dev-lang/ruby-2.7.0::gentoo\n\
 # required by dev-ruby/did_you_mean-1.4.0::gentoo[ruby_targets_ruby27]\n\
->=virtual/rubygems-16 ruby_targets_ruby27" >> $EPREFIX/etc/portage/package.use
+>=virtual/rubygems-16 ruby_targets_ruby27\n\
+# required by dev-lang/ruby-2.7.0::gentoo\n\
+# required by dev-ruby/bundler-2.1.4::gentoo[ruby_targets_ruby27]\n\
+>=dev-ruby/power_assert-1.1.5 ruby_targets_ruby27\n\
+# required by dev-lang/ruby-2.7.0::gentoo\n\
+# required by dev-ruby/bundler-2.1.4::gentoo[ruby_targets_ruby27]\n\
+>=dev-ruby/rake-13.0.1 ruby_targets_ruby27\n\
+# required by dev-lang/ruby-2.7.0::gentoo\n\
+# required by dev-ruby/bundler-2.1.4::gentoo[ruby_targets_ruby27]\n\
+>=dev-ruby/did_you_mean-1.4.0 ruby_targets_ruby27\n\
+# required by dev-lang/ruby-2.7.0::gentoo\n\
+# required by dev-ruby/bundler-2.1.4::gentoo[ruby_targets_ruby27]\n\
+>=dev-ruby/net-telnet-0.2.0 ruby_targets_ruby27\n\
+# required by dev-lang/ruby-2.7.0::gentoo\n\
+# required by dev-ruby/bundler-2.1.4::gentoo[ruby_targets_ruby27]\n\
+>=dev-ruby/json-2.3.0 ruby_targets_ruby27\n\
+# required by dev-lang/ruby-2.7.0::gentoo[rdoc]\n\
+# required by dev-ruby/bundler-2.1.4::gentoo[ruby_targets_ruby27]\n\
+>=dev-ruby/rdoc-6.2.0 ruby_targets_ruby27\n\
+# required by virtual/rubygems-16::gentoo[ruby_targets_ruby27]\n\
+# required by dev-ruby/racc-1.4.16-r1::gentoo[-test,ruby_targets_ruby24]\n\
+# required by dev-ruby/rdoc-6.2.0::gentoo[ruby_targets_ruby25]\n\
+# required by dev-lang/ruby-2.7.0::gentoo[rdoc]\n\
+# required by dev-ruby/bundler-2.1.4::gentoo[ruby_targets_ruby27]\n\
+>=dev-ruby/rubygems-3.1.2 ruby_targets_ruby27\n\
+# required by dev-ruby/rdoc-6.2.0::gentoo[ruby_targets_ruby27]\n\
+# required by dev-lang/ruby-2.7.0::gentoo[rdoc]\n\
+# required by dev-ruby/bundler-2.1.4::gentoo[ruby_targets_ruby27]\n\
+>=dev-ruby/kpeg-1.1.0-r1 ruby_targets_ruby27\n\
+# required by dev-ruby/rdoc-6.2.0::gentoo[ruby_targets_ruby27]\n\
+# required by dev-lang/ruby-2.7.0::gentoo[rdoc]\n\
+# required by dev-ruby/bundler-2.1.4::gentoo[ruby_targets_ruby27]\n\
+>=dev-ruby/racc-1.4.16-r1 ruby_targets_ruby27" >> $EPREFIX/etc/portage/package.use
 
 # dev-qt/qtcore 5.12 & 5.13 has some error that causes later on ros-kinetic/qt_gui_cpp
 # to fail emerging with
