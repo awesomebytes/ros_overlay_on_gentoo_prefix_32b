@@ -122,7 +122,7 @@ RUN echo "# required by virtual/rubygems-16::gentoo[ruby_targets_ruby27]\n\
 # required by dev-ruby/xmlrpc-0.3.0::gentoo[ruby_targets_ruby25]\n\
 # required by dev-lang/ruby-2.4.9::gentoo\n\
 # required by dev-ruby/did_you_mean-1.1.2::gentoo[ruby_targets_ruby24]\n\
->=dev-ruby/bundler-2.1.4 ruby_targets_ruby27\n\
+>=dev-ruby/bundler-2.1.4 ruby_targets_ruby27 -doc\n\
 # required by dev-ruby/bundler-2.1.4::gentoo[-test,ruby_targets_ruby27]\n\
 # required by dev-lang/ruby-2.7.0::gentoo\n\
 # required by dev-ruby/did_you_mean-1.4.0::gentoo[ruby_targets_ruby27]\n\
