@@ -1,11 +1,6 @@
 # Pull ros-kinetic/ros_base already emerged and the first part to emerge desktop
 FROM awesomebytes/roogp_32b_ros_kinetic_desktop_1
 
-# Hack meanwhile this gets solved: https://github.com/ros/ros-overlay/issues/913
-RUN rm $EPREFIX/usr/local/portage/ros-kinetic/orocos_kdl/files/*
-RUN RUN cd $EPREFIX/usr/local/portage/ros-kinetic/orocos_kdl; $PREFIXED ebuild $EPREFIX/usr/local/portage/ros-kinetic/orocos_kdl/*.ebuild manifest
-
-
 # Numpy doesn't support Python 2.7 anymore
 # and we are still pending on migrating to Python 3 (as ROS is)
 # ros-kinetic/opencv_bridge fails to emerge with:
