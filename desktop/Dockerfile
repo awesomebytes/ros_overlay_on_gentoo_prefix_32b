@@ -77,12 +77,6 @@ RUN mkdir -p /tmp/gentoo/etc/portage/profile && \
 # and I found no way of emerging it
 RUN echo ">media-libs/libv4l-1.10.1" >> /tmp/gentoo/etc/portage/package.mask
 
-# # For https://bugs.gentoo.org/654804
-# # TODO: make a repository for these kind of patches...
-# # https://wiki.gentoo.org/wiki/Handbook:AMD64/Portage/CustomTree#Defining_a_custom_repository
-# RUN sed -i 's/local tmp_root=\${D%\/}\/tmp/local tmp_root=\${ED%\/}\/tmp/g' /tmp/gentoo/usr/portage/dev-python/PyQt5/PyQt5-5.10.1-r1.ebuild
-# RUN $PREFIXED ebuild /tmp/gentoo/usr/portage/dev-python/PyQt5/PyQt5-5.10.1-r1.ebuild manifest
-
 # If we can go faster, try
 RUN sed -i -e 's/j1/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPREFIX/etc/portage/make.conf
 RUN sed -i -e 's/j2/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPREFIX/etc/portage/make.conf
@@ -186,19 +180,7 @@ RUN cd /tmp/gentoo/usr/bin && \
 RUN qt_install_libs_path=/tmp/gentoo/usr/lib; sed -i 's@$$\[QT_INSTALL_LIBS\]@'$qt_install_libs_path'@' $EPREFIX/usr/lib/libQt5Gui.prl
 RUN cd /tmp/gentoo/usr/lib/cmake/Qt5Gui; find ./ -type f -exec sed -i -e 's@/home/user@/tmp@g' {} \;
 
-# For ros-kinetic/opencv3 as reported in https://github.com/ros/ros-overlay/issues/726
-# RUN echo ">=dev-games/ogre-1.10.12 experimental" >> $EPREFIX/etc/portage/package.use
-# RUN sed -i 's/-DOGRE_NODE_STORAGE_LEGACY=no/-DOGRE_NODE_STORAGE_LEGACY=yes/g' $EPREFIX/usr/portage/dev-games/ogre/ogre-1.10.12.ebuild &&\
-#     $PREFIXED ebuild $EPREFIX/usr/portage/dev-games/ogre/ogre-1.10.12.ebuild manifest
-RUN echo ">dev-games/ogre-1.9.0-r1" >> $EPREFIX/etc/portage/package.mask
-RUN $PREFIXED emerge dev-games/ogre
 
-# As reported here https://github.com/ros/ros-overlay/issues/581
-# For cv_bridge, camera_calibration_parsers (at least)
-RUN echo ">=dev-libs/boost-1.65.0 python" >> $EPREFIX/etc/portage/package.use
-RUN $PREFIXED emerge dev-libs/boost[python]
-RUN cd $EPREFIX/usr/lib &&\
-    ln -s libboost_python-2.7.so libboost_python.so
 
 
 ENTRYPOINT ["/bin/bash"]
