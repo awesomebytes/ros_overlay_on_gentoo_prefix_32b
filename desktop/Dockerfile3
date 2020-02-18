@@ -1,6 +1,10 @@
 # Pull ros-kinetic/ros_base already emerged and the first part to emerge desktop
 FROM awesomebytes/roogp_32b_ros_kinetic_desktop_2
 
+
+RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/python_qt_binding-0.3.4 &&\
+    wget  https://github.com/ros-visualization/python_qt_binding/commit/0a4893791039d5c3f851ee7bc2de832209d52f6d.patch
+
 # Setup desktop (237 packages)
 RUN $PREFIXED emerge ros-kinetic/desktop || true
 
