@@ -37,11 +37,11 @@ jobs:
     # Tag as :latest too
     - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'tag as latest'
-      condition: always()
+      # condition: always()
     # Push as latest
     - script: docker push $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'push latest to DockerHub'
-      condition: always()
+      # condition: always()
 
   - job: "build_ros_kinetic_ros_base_2"
     timeoutInMinutes: 0
@@ -76,11 +76,11 @@ jobs:
     # Tag as :latest too
     - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'tag as latest'
-      condition: always()
+      # condition: always()
     # Push as latest
     - script: docker push $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'push latest to DockerHub'
-      condition: always()
+      # condition: always()
  
   - job: package_stage_ros_base
     timeoutInMinutes: 0
@@ -116,11 +116,11 @@ jobs:
     # Tag as :latest too
     - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'tag as latest'
-      condition: always()
+      # condition: always()
     # Push as latest
     - script: docker push $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'push latest to DockerHub'
-      condition: always()
+      # condition: always()
 
     # Create a temporal container to copy the gentoo_on_tmp.tar.gz
     - script: |
@@ -184,11 +184,11 @@ jobs:
     # Tag as :latest too
     - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'tag as latest'
-      condition: always()
+      # condition: always()
     # Push as latest
     - script: docker push $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'push latest to DockerHub'
-      condition: always()
+      # condition: always()
 
   - job: "build_ros_kinetic_desktop_2"
     timeoutInMinutes: 0
@@ -220,11 +220,11 @@ jobs:
     # Tag as :latest too
     - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'tag as latest'
-      condition: always()
+      # condition: always()
     # Push as latest
     - script: docker push $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'push latest to DockerHub'
-      condition: always()
+      # condition: always()
 
   - job: "build_ros_kinetic_desktop_3"
     timeoutInMinutes: 0
@@ -256,11 +256,11 @@ jobs:
     # Tag as :latest too
     - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'tag as latest'
-      condition: always()
+      # condition: always()
     # Push as latest
     - script: docker push $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'push latest to DockerHub'
-      condition: always()
+      # condition: always()
  
   - job: package_stage_desktop
     timeoutInMinutes: 0
@@ -296,11 +296,11 @@ jobs:
     # Tag as :latest too
     - script: docker tag $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'tag as latest'
-      condition: always()
+      # condition: always()
     # Push as latest
     - script: docker push $(DockerHub_user)/$(docker_image_name):latest
       displayName: 'push latest to DockerHub'
-      condition: always()
+      # condition: always()
 
     # Create a temporal container to copy the gentoo_on_tmp.tar.gz
     - script: |
