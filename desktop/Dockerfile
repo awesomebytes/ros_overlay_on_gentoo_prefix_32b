@@ -170,17 +170,5 @@ RUN mkdir -p $EPREFIX/etc/portage/patches/media-libs/gst-plugins-bad-1.14.5 &&\
 RUN mkdir -p $EPREFIX/etc/portage/patches/media-libs/gst-plugins-base-1.14.5 &&\
     wget https://705974.bugs.gentoo.org/attachment.cgi?id=604220 -O $EPREFIX/etc/portage/patches/media-libs/gst-plugins-base-1.14.5/make-fix.patch
 
-# cause of https://github.com/ros/ros-overlay/issues/725
-# Workaround cause of https://bugs.gentoo.org/704624 dev-python/PyQt5-5.14.0 doesn't emerge, go to previous
-# RUN echo ">=dev-python/PyQt5-5.13.2" >> $EPREFIX/etc/portage/package.mask
-RUN $PREFIXED emerge dev-qt/qttest dev-qt/qtconcurrent dev-qt/qtwidgets dev-python/PyQt5[gui,widgets]
-RUN cd /tmp/gentoo/usr/bin && \
-    unlink qmake && \
-    ln -s /tmp/gentoo/usr/lib64/qt5/bin/qmake qmake
-RUN qt_install_libs_path=/tmp/gentoo/usr/lib; sed -i 's@$$\[QT_INSTALL_LIBS\]@'$qt_install_libs_path'@' $EPREFIX/usr/lib/libQt5Gui.prl
-RUN cd /tmp/gentoo/usr/lib/cmake/Qt5Gui; find ./ -type f -exec sed -i -e 's@/home/user@/tmp@g' {} \;
-
-
-
 
 ENTRYPOINT ["/bin/bash"]
