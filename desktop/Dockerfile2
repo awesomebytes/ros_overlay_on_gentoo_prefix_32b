@@ -12,31 +12,4 @@ RUN qt_install_libs_path=/tmp/gentoo/usr/lib; sed -i 's@$$\[QT_INSTALL_LIBS\]@'$
 RUN cd /tmp/gentoo/usr/lib/cmake/Qt5Gui; find ./ -type f -exec sed -i -e 's@/home/user@/tmp@g' {} \;
 
 
-# For ros-kinetic/opencv3 as reported in https://github.com/ros/ros-overlay/issues/726
-# RUN echo ">=dev-games/ogre-1.10.12 experimental" >> $EPREFIX/etc/portage/package.use
-# RUN sed -i 's/-DOGRE_NODE_STORAGE_LEGACY=no/-DOGRE_NODE_STORAGE_LEGACY=yes/g' $EPREFIX/usr/portage/dev-games/ogre/ogre-1.10.12.ebuild &&\
-#     $PREFIXED ebuild $EPREFIX/usr/portage/dev-games/ogre/ogre-1.10.12.ebuild manifest
-RUN echo ">dev-games/ogre-1.9.0-r1" >> $EPREFIX/etc/portage/package.mask
-RUN $PREFIXED emerge dev-games/ogre
-
-# As reported here https://github.com/ros/ros-overlay/issues/581
-# For cv_bridge, camera_calibration_parsers (at least)
-RUN echo ">=dev-libs/boost-1.65.0 python" >> $EPREFIX/etc/portage/package.use
-RUN $PREFIXED emerge dev-libs/boost[python]
-RUN cd $EPREFIX/usr/lib &&\
-    ln -s libboost_python-2.7.so libboost_python.so
-
-
-# Numpy doesn't support Python 2.7 anymore
-# and we are still pending on migrating to Python 3 (as ROS is)
-# ros-kinetic/opencv_bridge fails to emerge with:
-# ImportError: No module named numpy
-# CMake Error at src/CMakeLists.txt:25 (message):
-#   Could not determine the NumPy include directory, verify that NumPy was
-#   installed correctly.
-# So we install the latest Python2 compatible numpy version
-RUN echo ">dev-python/numpy-1.17" >> $EPREFIX/etc/portage/package.mask && \
-    $PREFIXED emerge dev-python/numpy
-
-
 ENTRYPOINT ["/bin/bash"]
