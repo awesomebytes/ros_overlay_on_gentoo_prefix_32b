@@ -4,7 +4,7 @@ FROM awesomebytes/roogp_32b_ros_kinetic_desktop_1
 # cause of https://github.com/ros/ros-overlay/issues/725
 # Workaround cause of https://bugs.gentoo.org/704624 dev-python/PyQt5-5.14.0 doesn't emerge, go to previous
 # RUN echo ">=dev-python/PyQt5-5.13.2" >> $EPREFIX/etc/portage/package.mask
-RUN $PREFIXED emerge dev-qt/qttest dev-qt/qtconcurrent dev-qt/qtwidgets dev-python/PyQt5[gui,widgets]
+RUN $PREFIXED emerge dev-python/PyQt5[gui,widgets]
 RUN cd /tmp/gentoo/usr/bin && \
     unlink qmake && \
     ln -s /tmp/gentoo/usr/lib/qt5/bin/qmake qmake

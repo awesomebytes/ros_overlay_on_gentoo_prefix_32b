@@ -159,7 +159,7 @@ RUN echo "# required by virtual/rubygems-16::gentoo[ruby_targets_ruby27]\n\
 # [very long line] ... -lQt5Gui $[QT_INSTALL_LIBS]/libQt5Core.so -lpthread  ...
 # x86_64-pc-linux-gnu-g++: error: 0/libQt5Core.so: No such file or directory
 # So we emerge it and then we patch the problem (an un-substituted symbol)
-RUN $PREFIXED emerge dev-qt/qtcore dev-qt/qtgui
+RUN $PREFIXED emerge dev-qt/qtcore dev-qt/qtgui dev-qt/qttest dev-qt/qtconcurrent dev-qt/qtwidgets
 
 # gstreamer gets pulled by Qt at some point, while emerging ros-kinetic/desktop
 # Meanwhile https://bugs.gentoo.org/705974 gets fixed upstream (make has a backward incompatible change)
