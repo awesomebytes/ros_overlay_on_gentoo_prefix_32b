@@ -5,7 +5,7 @@
 
 # Everything must be under a 'job' to be able to set the timeoutInMinutes
 jobs:
-  - job: "build_ros_kinetic_ros_base_1"
+  - job: "build_ros_melodic_ros_base_1"
     timeoutInMinutes: 0
 
     # pool: magiclab
@@ -13,7 +13,7 @@ jobs:
       vmImage: 'Ubuntu 16.04'
 
     variables:
-      docker_image_name: roogp_32b_ros_kinetic_ros_base_setup
+      docker_image_name: roogp_32b_ros_melodic_ros_base_setup
 
     steps:
     - script: docker login -u $(DockerHub_user) -p $(DockerHub_password)
@@ -43,16 +43,16 @@ jobs:
       displayName: 'push latest to DockerHub'
       # condition: always()
 
-  - job: "build_ros_kinetic_ros_base_2"
+  - job: "build_ros_melodic_ros_base_2"
     timeoutInMinutes: 0
-    dependsOn: "build_ros_kinetic_ros_base_1"
+    dependsOn: "build_ros_melodic_ros_base_1"
 
     # pool: magiclab
     pool:
       vmImage: 'Ubuntu 16.04'
 
     variables:
-      docker_image_name: roogp_32b_ros_kinetic_ros_base
+      docker_image_name: roogp_32b_ros_melodic_ros_base
 
     steps:
     - script: docker login -u $(DockerHub_user) -p $(DockerHub_password)
@@ -84,16 +84,16 @@ jobs:
  
   - job: package_stage_ros_base
     timeoutInMinutes: 0
-    dependsOn: "build_ros_kinetic_ros_base_2"
+    dependsOn: "build_ros_melodic_ros_base_2"
 
     # pool: magiclab
     pool:
       vmImage: 'Ubuntu 16.04'
 
     variables:
-      docker_image_name: roogp_32b_ros_kinetic_ros_base_package_stage
+      docker_image_name: roogp_32b_ros_melodic_ros_base_package_stage
       platform: x86
-      rosdistro: ros-kinetic
+      rosdistro: ros-melodic
       bundlename: ros_base
 
     steps:
@@ -152,16 +152,16 @@ jobs:
 
 
 
-  - job: "build_ros_kinetic_desktop_1"
+  - job: "build_ros_melodic_desktop_1"
     timeoutInMinutes: 0
-    dependsOn: "build_ros_kinetic_ros_base_2"
+    dependsOn: "build_ros_melodic_ros_base_2"
 
     # pool: magiclab
     pool:
       vmImage: 'Ubuntu 16.04'
 
     variables:
-      docker_image_name: roogp_32b_ros_kinetic_desktop_1
+      docker_image_name: roogp_32b_ros_melodic_desktop_1
 
     steps:
     - script: docker login -u $(DockerHub_user) -p $(DockerHub_password)
@@ -190,16 +190,16 @@ jobs:
       displayName: 'push latest to DockerHub'
       # condition: always()
 
-  - job: "build_ros_kinetic_desktop_2"
+  - job: "build_ros_melodic_desktop_2"
     timeoutInMinutes: 0
-    dependsOn: "build_ros_kinetic_desktop_1"
+    dependsOn: "build_ros_melodic_desktop_1"
 
     # pool: magiclab
     pool:
       vmImage: 'Ubuntu 16.04'
 
     variables:
-      docker_image_name: roogp_32b_ros_kinetic_desktop_2
+      docker_image_name: roogp_32b_ros_melodic_desktop_2
 
     steps:
     - script: docker login -u $(DockerHub_user) -p $(DockerHub_password)
@@ -226,16 +226,16 @@ jobs:
       displayName: 'push latest to DockerHub'
       # condition: always()
 
-  - job: "build_ros_kinetic_desktop_3"
+  - job: "build_ros_melodic_desktop_3"
     timeoutInMinutes: 0
-    dependsOn: "build_ros_kinetic_desktop_2"
+    dependsOn: "build_ros_melodic_desktop_2"
 
     # pool: magiclab
     pool:
       vmImage: 'Ubuntu 16.04'
 
     variables:
-      docker_image_name: roogp_32b_ros_kinetic_desktop_3
+      docker_image_name: roogp_32b_ros_melodic_desktop_3
 
     steps:
     - script: docker login -u $(DockerHub_user) -p $(DockerHub_password)
@@ -264,16 +264,16 @@ jobs:
  
   - job: package_stage_desktop
     timeoutInMinutes: 0
-    dependsOn: "build_ros_kinetic_desktop_3"
+    dependsOn: "build_ros_melodic_desktop_3"
 
     # pool: magiclab
     pool:
       vmImage: 'Ubuntu 16.04'
 
     variables:
-      docker_image_name: roogp_32b_ros_kinetic_desktop_package_stage
+      docker_image_name: roogp_32b_ros_melodic_desktop_package_stage
       platform: x86
-      rosdistro: ros-kinetic
+      rosdistro: ros-melodic
       bundlename: desktop
 
     steps:

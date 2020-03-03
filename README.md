@@ -11,12 +11,12 @@ Ready-to-use releases: https://github.com/awesomebytes/ros_overlay_on_gentoo_pre
 
 # Currently building
 
-* ros-kinetic/ros_base
-* ros-kinetic/desktop
+* ros-melodic/ros_base
+* ros-melodic/desktop
 
 # Try it
 
-Go to https://github.com/awesomebytes/ros_overlay_on_gentoo_prefix_32b/releases and download the latest release of your choice (ros-kinetic/ros_base is 2GB~), it's divided in 1GB parts.
+Go to https://github.com/awesomebytes/ros_overlay_on_gentoo_prefix_32b/releases and download the latest release of your choice (ros-melodic/ros_base is 2GB~), it's divided in 1GB parts.
 
 Put the parts together and extract (4.4GB~):
 ```
@@ -29,8 +29,8 @@ rm gentoo_on_tmp*
 ./gentoo/startprefix
 ```
 
-ros-kinetic/desktop is ~4GB, extracted ~6GB.
+ros-melodic/desktop is ~4GB, extracted ~6GB.
 
 # WIP
 
-* ros-kinetic/desktop_full
+* ros-melodic/desktop_full

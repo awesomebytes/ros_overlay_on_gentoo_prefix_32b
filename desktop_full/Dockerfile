@@ -1,4 +1,4 @@
-FROM awesomebytes/roogp_ros_kinetic_desktop_2
+FROM awesomebytes/roogp_ros_melodic_desktop_2
 
 # If we can go faster, try
 RUN sed -i -e 's/j1/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPREFIX/etc/portage/make.conf
@@ -6,11 +6,11 @@ RUN sed -i -e 's/j2/j'"$((`grep -c \^processor \/proc\/cpuinfo` / 2))"'/g' $EPRE
 
 # Patch issue https://github.com/ros/ros-overlay/issues/607
 ADD 0001-Force-find-gtk2.0.patch 0001-Force-find-gtk2.0.patch
-RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/image_view &&\
-    mv 0001-Force-find-gtk2.0.patch $EPREFIX/etc/portage/patches/ros-kinetic/image_view
+RUN mkdir -p $EPREFIX/etc/portage/patches/ros-melodic/image_view &&\
+    mv 0001-Force-find-gtk2.0.patch $EPREFIX/etc/portage/patches/ros-melodic/image_view
 
 # desktop_full includes desktop, perception & simulators
-RUN $PREFIXED emerge ros-kinetic/perception
+RUN $PREFIXED emerge ros-melodic/perception
 
 
 RUN echo "# required by dev-lang/ruby-2.5.3::gentoo\n\
@@ -98,5 +98,5 @@ RUN sed -i 's/${D}/${ED}/g' /tmp/gentoo/usr/portage/dev-libs/libspnav/libspnav-0
 # currently stuck on ignition-math
 RUN $PREFIXED emerge =sci-electronics/gazebo-9.4.1
 
-RUN $PREFIXED emerge ros-kinetic/desktop_full
+RUN $PREFIXED emerge ros-melodic/desktop_full
 

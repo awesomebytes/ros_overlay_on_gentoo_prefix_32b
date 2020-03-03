@@ -1,5 +1,5 @@
-# Pull ros-kinetic/ros_base already emerged and the first part to emerge desktop
-FROM awesomebytes/roogp_32b_ros_kinetic_desktop_1
+# Pull ros-melodic/ros_base already emerged and the first part to emerge desktop
+FROM awesomebytes/roogp_32b_ros_melodic_desktop_1
 
 # cause of https://github.com/ros/ros-overlay/issues/725
 # Workaround cause of https://bugs.gentoo.org/704624 dev-python/PyQt5-5.14.0 doesn't emerge, go to previous

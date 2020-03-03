@@ -1,5 +1,5 @@
-# Pull ros-kinetic/ros_base already emerged
-FROM awesomebytes/roogp_32b_ros_kinetic_ros_base
+# Pull ros-melodic/ros_base already emerged
+FROM awesomebytes/roogp_32b_ros_melodic_ros_base
 
 # To build qt successfully
 RUN echo "# For ROS stuff that uses qt\n\
@@ -11,61 +11,61 @@ RUN echo ">=dev-libs/libpcre2-10.32 pcre16" >> /tmp/gentoo/etc/portage/package.u
 
 RUN echo "# required by media-gfx/graphviz-2.40.1-r1::gentoo\n\
 # required by dev-python/pydot-1.2.3::gentoo\n\
-# required by ros-kinetic/qt_dotgraph-0.3.11::ros-overlay\n\
-# required by ros-kinetic/rqt_dep-0.4.9::ros-overlay\n\
-# required by ros-kinetic/rqt_common_plugins-0.4.8::ros-overlay\n\
-# required by ros-kinetic/viz-1.3.2::ros-overlay\n\
-# required by ros-kinetic/desktop-1.3.2::ros-overlay\n\
-# required by ros-kinetic/desktop (argument)\n\
+# required by ros-melodic/qt_dotgraph-0.3.11::ros-overlay\n\
+# required by ros-melodic/rqt_dep-0.4.9::ros-overlay\n\
+# required by ros-melodic/rqt_common_plugins-0.4.8::ros-overlay\n\
+# required by ros-melodic/viz-1.3.2::ros-overlay\n\
+# required by ros-melodic/desktop-1.3.2::ros-overlay\n\
+# required by ros-melodic/desktop (argument)\n\
 >=media-libs/gd-2.2.5-r1 truetype jpeg png fontconfig\n\
 # required by dev-qt/qtgui-5.11.2-r1::gentoo[xcb]\n\
 # required by dev-qt/qtwidgets-5.11.2::gentoo\n\
-# required by ros-kinetic/turtlesim-0.7.1::ros-overlay\n\
-# required by ros-kinetic/ros_tutorials-0.7.1::ros-overlay\n\
-# required by ros-kinetic/desktop-1.3.2::ros-overlay\n\
-# required by ros-kinetic/desktop (argument)\n\
+# required by ros-melodic/turtlesim-0.7.1::ros-overlay\n\
+# required by ros-melodic/ros_tutorials-0.7.1::ros-overlay\n\
+# required by ros-melodic/desktop-1.3.2::ros-overlay\n\
+# required by ros-melodic/desktop (argument)\n\
 >=x11-libs/libxcb-1.13.1 xkb\n\
-# required by ros-kinetic/opencv3-3.3.1-r5::ros-overlay\n\
-# required by ros-kinetic/cv_bridge-1.12.8::ros-overlay\n\
-# required by ros-kinetic/rqt_image_view-0.4.13::ros-overlay\n\
-# required by ros-kinetic/rqt_common_plugins-0.4.8::ros-overlay\n\
-# required by ros-kinetic/viz-1.3.2::ros-overlay\n\
-# required by ros-kinetic/desktop-1.3.2::ros-overlay\n\
-# required by ros-kinetic/desktop (argument)\n\
+# required by ros-melodic/opencv3-3.3.1-r5::ros-overlay\n\
+# required by ros-melodic/cv_bridge-1.12.8::ros-overlay\n\
+# required by ros-melodic/rqt_image_view-0.4.13::ros-overlay\n\
+# required by ros-melodic/rqt_common_plugins-0.4.8::ros-overlay\n\
+# required by ros-melodic/viz-1.3.2::ros-overlay\n\
+# required by ros-melodic/desktop-1.3.2::ros-overlay\n\
+# required by ros-melodic/desktop (argument)\n\
 >=sci-libs/vtk-8.1.0-r3 rendering qt5\n\
 # required by dev-qt/qtgui-5.11.2-r1::gentoo[xcb]\n\
 # required by dev-qt/qtwidgets-5.11.2::gentoo\n\
-# required by ros-kinetic/turtlesim-0.7.1::ros-overlay\n\
-# required by ros-kinetic/ros_tutorials-0.7.1::ros-overlay\n\
-# required by ros-kinetic/desktop-1.3.2::ros-overlay\n\
-# required by ros-kinetic/desktop (argument)\n\
+# required by ros-melodic/turtlesim-0.7.1::ros-overlay\n\
+# required by ros-melodic/ros_tutorials-0.7.1::ros-overlay\n\
+# required by ros-melodic/desktop-1.3.2::ros-overlay\n\
+# required by ros-melodic/desktop (argument)\n\
 >=x11-libs/libxkbcommon-0.8.2 X\n\
 # required by dev-libs/collada-dom-2.5.0::gentoo\n\
-# required by ros-kinetic/collada_urdf-1.12.12::ros-overlay\n\
-# required by ros-kinetic/robot_model-1.12.11::ros-overlay\n\
-# required by ros-kinetic/robot-1.3.2::ros-overlay\n\
-# required by ros-kinetic/desktop-1.3.2::ros-overlay\n\
-# required by ros-kinetic/desktop (argument)\n\
+# required by ros-melodic/collada_urdf-1.12.12::ros-overlay\n\
+# required by ros-melodic/robot_model-1.12.11::ros-overlay\n\
+# required by ros-melodic/robot-1.3.2::ros-overlay\n\
+# required by ros-melodic/desktop-1.3.2::ros-overlay\n\
+# required by ros-melodic/desktop (argument)\n\
 >=sys-libs/zlib-1.2.11-r2 minizip" >> /tmp/gentoo/etc/portage/package.use
 
 RUN echo "# required by dev-libs/urdfdom-9999::gentoo\n\
-# required by ros-kinetic/urdf-1.12.12::ros-overlay\n\
-# required by ros-kinetic/collada_urdf-1.12.12::ros-overlay\n\
-# required by ros-kinetic/robot_model-1.12.11::ros-overlay\n\
-# required by ros-kinetic/robot-1.3.2::ros-overlay\n\
-# required by ros-kinetic/desktop-1.3.2::ros-overlay\n\
-# required by ros-kinetic/desktop (argument)\n\
+# required by ros-melodic/urdf-1.12.12::ros-overlay\n\
+# required by ros-melodic/collada_urdf-1.12.12::ros-overlay\n\
+# required by ros-melodic/robot_model-1.12.11::ros-overlay\n\
+# required by ros-melodic/robot-1.3.2::ros-overlay\n\
+# required by ros-melodic/desktop-1.3.2::ros-overlay\n\
+# required by ros-melodic/desktop (argument)\n\
 =dev-libs/urdfdom_headers-9999 **\n\
-# required by ros-kinetic/robot_model-1.12.11::ros-overlay\n\
-# required by ros-kinetic/robot-1.3.2::ros-overlay\n\
-# required by ros-kinetic/desktop-1.3.2::ros-overlay\n\
-# required by ros-kinetic/desktop (argument)\n\
+# required by ros-melodic/robot_model-1.12.11::ros-overlay\n\
+# required by ros-melodic/robot-1.3.2::ros-overlay\n\
+# required by ros-melodic/desktop-1.3.2::ros-overlay\n\
+# required by ros-melodic/desktop (argument)\n\
 =dev-libs/urdfdom-9999 **\n\
-# required by ros-kinetic/collada_urdf-1.12.12::ros-overlay\n\
-# required by ros-kinetic/robot_model-1.12.11::ros-overlay\n\
-# required by ros-kinetic/robot-1.3.2::ros-overlay\n\
-# required by ros-kinetic/desktop-1.3.2::ros-overlay\n\
-# required by ros-kinetic/desktop (argument)\n\
+# required by ros-melodic/collada_urdf-1.12.12::ros-overlay\n\
+# required by ros-melodic/robot_model-1.12.11::ros-overlay\n\
+# required by ros-melodic/robot-1.3.2::ros-overlay\n\
+# required by ros-melodic/desktop-1.3.2::ros-overlay\n\
+# required by ros-melodic/desktop (argument)\n\
 =dev-libs/collada-dom-9999 **" >> /tmp/gentoo/etc/portage/package.accept_keywords
 
 
@@ -154,14 +154,14 @@ RUN echo "# required by virtual/rubygems-16::gentoo[ruby_targets_ruby27]\n\
 # required by dev-ruby/bundler-2.1.4::gentoo[ruby_targets_ruby27]\n\
 >=dev-ruby/racc-1.4.16-r1 ruby_targets_ruby27" >> $EPREFIX/etc/portage/package.use
 
-# dev-qt/qtcore 5.12 & 5.13 has some error that causes later on ros-kinetic/qt_gui_cpp
+# dev-qt/qtcore 5.12 & 5.13 has some error that causes later on ros-melodic/qt_gui_cpp
 # to fail emerging with
 # [very long line] ... -lQt5Gui $[QT_INSTALL_LIBS]/libQt5Core.so -lpthread  ...
 # x86_64-pc-linux-gnu-g++: error: 0/libQt5Core.so: No such file or directory
 # So we emerge it and then we patch the problem (an un-substituted symbol)
 RUN $PREFIXED emerge dev-qt/qtcore dev-qt/qtgui dev-qt/qttest dev-qt/qtconcurrent dev-qt/qtwidgets
 
-# gstreamer gets pulled by Qt at some point, while emerging ros-kinetic/desktop
+# gstreamer gets pulled by Qt at some point, while emerging ros-melodic/desktop
 # Meanwhile https://bugs.gentoo.org/705974 gets fixed upstream (make has a backward incompatible change)
 RUN mkdir -p $EPREFIX/etc/portage/patches/media-libs/gstreamer-1.14.5 &&\
     wget https://705974.bugs.gentoo.org/attachment.cgi?id=604218 -O $EPREFIX/etc/portage/patches/media-libs/gstreamer-1.14.5/make-fix.patch

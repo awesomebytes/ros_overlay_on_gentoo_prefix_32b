@@ -1,7 +1,7 @@
-# Pull ros-kinetic/ros_base already emerged and the first part to emerge desktop
-FROM awesomebytes/roogp_32b_ros_kinetic_desktop_2
+# Pull ros-melodic/ros_base already emerged and the first part to emerge desktop
+FROM awesomebytes/roogp_32b_ros_melodic_desktop_2
 
-# For ros-kinetic/opencv3 as reported in https://github.com/ros/ros-overlay/issues/726
+# For ros-melodic/opencv3 as reported in https://github.com/ros/ros-overlay/issues/726
 # RUN echo ">=dev-games/ogre-1.10.12 experimental" >> $EPREFIX/etc/portage/package.use
 # RUN sed -i 's/-DOGRE_NODE_STORAGE_LEGACY=no/-DOGRE_NODE_STORAGE_LEGACY=yes/g' $EPREFIX/usr/portage/dev-games/ogre/ogre-1.10.12.ebuild &&\
 #     $PREFIXED ebuild $EPREFIX/usr/portage/dev-games/ogre/ogre-1.10.12.ebuild manifest
@@ -18,7 +18,7 @@ RUN cd $EPREFIX/usr/lib &&\
 
 # Numpy doesn't support Python 2.7 anymore
 # and we are still pending on migrating to Python 3 (as ROS is)
-# ros-kinetic/opencv_bridge fails to emerge with:
+# ros-melodic/opencv_bridge fails to emerge with:
 # ImportError: No module named numpy
 # CMake Error at src/CMakeLists.txt:25 (message):
 #   Could not determine the NumPy include directory, verify that NumPy was
@@ -27,20 +27,20 @@ RUN cd $EPREFIX/usr/lib &&\
 RUN echo ">dev-python/numpy-1.17" >> $EPREFIX/etc/portage/package.mask && \
     $PREFIXED emerge dev-python/numpy
 
-RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/python_qt_binding-0.3.4 &&\
-    wget  https://github.com/ros-visualization/python_qt_binding/commit/0a4893791039d5c3f851ee7bc2de832209d52f6d.patch -O $EPREFIX/etc/portage/patches/ros-kinetic/python_qt_binding-0.3.4/lpthread_fix.patch &&\
-    $PREFIXED emerge ros-kinetic/python_qt_binding
+RUN mkdir -p $EPREFIX/etc/portage/patches/ros-melodic/python_qt_binding-0.3.4 &&\
+    wget  https://github.com/ros-visualization/python_qt_binding/commit/0a4893791039d5c3f851ee7bc2de832209d52f6d.patch -O $EPREFIX/etc/portage/patches/ros-melodic/python_qt_binding-0.3.4/lpthread_fix.patch &&\
+    $PREFIXED emerge ros-melodic/python_qt_binding
 
 # Setup desktop (237 packages)
-RUN $PREFIXED emerge ros-kinetic/desktop || true
+RUN $PREFIXED emerge ros-melodic/desktop || true
 
 # Extra trick needed as qmake points to qtchooser for Rviz, but we can only do it
 # when we already have QT5
-# so we let ros-kinetic/desktop fail once and do this
+# so we let ros-melodic/desktop fail once and do this
 RUN cd /tmp/gentoo/usr/bin && \
     unlink qmake && \
     ln -s /tmp/gentoo/usr/lib/qt5/bin/qmake qmake
-RUN $PREFIXED emerge ros-kinetic/desktop
+RUN $PREFIXED emerge ros-melodic/desktop
 
 
 # Create the bin packages
