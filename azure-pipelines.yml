@@ -142,7 +142,7 @@ jobs:
         export RELEASE_TAG=release/${DATE}
         export RELEASE_FILE_NAME=gentoo_on_tmp_with_$(rosdistro)_$(bundlename)-${PLATFORM}_${DATE}.tar.gz
         export RELEASE_NAME="Gentoo Prefix on /tmp/gentoo ROS $(bundlename)"
-        export BODY="Use ROS Kinetic on Gentoo Prefix with: cat ${RELEASE_FILE_NAME}.part-* > ${RELEASE_FILE_NAME}; tar xvf gentoo_on_tmp*.tar.gz; ./gentoo/startprefix"
+        export BODY="Use ROS Melodic on Gentoo Prefix with: cat ${RELEASE_FILE_NAME}.part-* > ${RELEASE_FILE_NAME}; tar xvf gentoo_on_tmp*.tar.gz; ./gentoo/startprefix"
         mv $HOME/gentoo_on_tmp.tar.gz ${RELEASE_FILE_NAME}
         split -b 1024MB -d ${RELEASE_FILE_NAME} ${RELEASE_FILE_NAME}.part-
         export PATH=$HOME/.local/bin:$PATH
@@ -322,7 +322,7 @@ jobs:
         export RELEASE_TAG=release/${DATE}
         export RELEASE_FILE_NAME=gentoo_on_tmp_with_$(rosdistro)_$(bundlename)-${PLATFORM}_${DATE}.tar.gz
         export RELEASE_NAME="Gentoo Prefix on /tmp/gentoo with ROS $(bundlename)"
-        export BODY="Use ROS Kinetic on Gentoo Prefix with: cat ${RELEASE_FILE_NAME}.part-* > ${RELEASE_FILE_NAME}; tar xvf gentoo_on_tmp*.tar.gz; ./gentoo/startprefix"
+        export BODY="Use ROS Melodic on Gentoo Prefix with: cat ${RELEASE_FILE_NAME}.part-* > ${RELEASE_FILE_NAME}; tar xvf gentoo_on_tmp*.tar.gz; ./gentoo/startprefix"
         mv $HOME/gentoo_on_tmp.tar.gz ${RELEASE_FILE_NAME}
         split -b 1024MB -d ${RELEASE_FILE_NAME} ${RELEASE_FILE_NAME}.part-
         export PATH=$HOME/.local/bin:$PATH
