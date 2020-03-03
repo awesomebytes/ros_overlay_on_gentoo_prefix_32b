@@ -27,9 +27,7 @@ RUN cd $EPREFIX/usr/lib &&\
 RUN echo ">dev-python/numpy-1.17" >> $EPREFIX/etc/portage/package.mask && \
     $PREFIXED emerge dev-python/numpy
 
-RUN mkdir -p $EPREFIX/etc/portage/patches/ros-kinetic/python_qt_binding-0.3.4 &&\
-    wget  https://github.com/ros-visualization/python_qt_binding/commit/0a4893791039d5c3f851ee7bc2de832209d52f6d.patch -O $EPREFIX/etc/portage/patches/ros-kinetic/python_qt_binding-0.3.4/lpthread_fix.patch &&\
-    $PREFIXED emerge ros-kinetic/python_qt_binding
+RUN $PREFIXED emerge ros-kinetic/python_qt_binding
 
 # Setup desktop (237 packages)
 RUN $PREFIXED emerge ros-kinetic/desktop || true
