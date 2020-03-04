@@ -29,6 +29,11 @@ RUN echo ">dev-python/numpy-1.17" >> $EPREFIX/etc/portage/package.mask && \
 
 RUN $PREFIXED emerge ros-melodic/python_qt_binding
 
+# Meanwhile tf2 is not correctly regenerated in ros-overlay to 0.6.6-1
+RUN wget https://gist.githubusercontent.com/awesomebytes/0564296907ff82603376fcecca60d3d3/raw/b5285a1f65b96c29e4ebb9ad46ae551b0818d543/tf2-0.6.6-1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/tf2/tf2-0.6.6-1.ebuild &&\
+    $PREFIXED ebuild $EPREFIX/usr/local/portage/ros-melodic/tf2/tf2-0.6.6-1.ebuild manifest &&\
+    $PREFIXED emerge ros-melodic/tf2
+
 # Setup desktop (237 packages)
 RUN $PREFIXED emerge ros-melodic/desktop || true
 
