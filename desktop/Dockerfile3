@@ -33,6 +33,11 @@ RUN $PREFIXED emerge ros-melodic/python_qt_binding
 RUN wget https://gist.githubusercontent.com/awesomebytes/0564296907ff82603376fcecca60d3d3/raw/b5285a1f65b96c29e4ebb9ad46ae551b0818d543/tf2-0.6.6-1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/tf2/tf2-0.6.6-r1.ebuild &&\
     $PREFIXED ebuild $EPREFIX/usr/local/portage/ros-melodic/tf2/tf2-0.6.6-r1.ebuild manifest &&\
     $PREFIXED emerge ros-melodic/tf2
+# Meanwhile a version newer than tf-1.12.0 is not released (for the boost patch)
+RUN mkdir -p $EPREFIX/etc/portage/patches/ros-melodic/tf-1.12.0 &&\
+    wget https://gist.githubusercontent.com/awesomebytes/cee46d45d1314d8df4512ed577c55227/raw/4a5edd58e84a0fa010089da7bdf6caa934d6936d/boost_signals_tf_1.12.0.patch -O $EPREFIX/etc/portage/patches/ros-melodic/tf-1.12.0/boost_signals.patch &&\
+    $PREFIXED emerge ros-melodic/tf
+
 
 # Setup desktop (237 packages)
 RUN $PREFIXED emerge ros-melodic/desktop || true
