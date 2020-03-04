@@ -240,7 +240,9 @@ jobs:
     steps:
     - script: docker login -u $(DockerHub_user) -p $(DockerHub_password)
       displayName: 'docker login'
-    - script: cd desktop && docker build -f Dockerfile3 -t $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) .
+    # - script: cd desktop && docker build -f Dockerfile3 -t $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) .
+    # Hacky patch to accelerate things on known build computer
+    - script: cd desktop && docker build -f Dockerfile3 --cache-from awesomebytes/roogp_32b_ros_melodic_desktop_3:1305 -t $(DockerHub_user)/$(docker_image_name):$(Build.BuildId) .
       displayName: 'docker build'
       # This means up to 6h
       timeoutInMinutes: 0
