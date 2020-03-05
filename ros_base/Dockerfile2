@@ -78,6 +78,12 @@ RUN wget https://raw.githubusercontent.com/ros/ros-overlay/408919dae30544a5da85c
 RUN wget https://raw.githubusercontent.com/ros/ros-overlay/408919dae30544a5da85c23c8bb8e5d0cc2a7ad0/ros-melodic/message_filters/message_filters-1.14.4-r1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/message_filters/message_filters-1.14.4-r1.ebuild &&\
 	$PREFIXED ebuild $EPREFIX/usr/local/portage/ros-melodic/message_filters/message_filters-1.14.4-r1.ebuild manifest
 
+# Until  is solved
+# We add manually the ros-melodic/roslib ebuild
+RUN wget https://raw.githubusercontent.com/ros/ros-overlay/ae66b6fcaaf231fb1224ea4b2318fe7e6601988d/ros-melodic/roslib/roslib-1.14.7-r1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/roslib/roslib-1.14.7-r1.ebuild &&\
+    wget https://raw.githubusercontent.com/ros/ros-overlay/ae66b6fcaaf231fb1224ea4b2318fe7e6601988d/ros-melodic/roslib/Manifest -O $EPREFIX/usr/local/portage/ros-melodic/roslib/Manifest &&\
+    $PREFIXED emerge ros-melodic/roslib
+
 # Setup the basic ROS
 RUN $PREFIXED emerge ros-melodic/ros_base || true
 # Apparently dev-lisp/sbcl-1.4.13 sometimes may fail in some of the tests
