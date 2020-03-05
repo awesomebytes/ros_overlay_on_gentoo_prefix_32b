@@ -1,5 +1,5 @@
 # ros_overlay_on_gentoo_prefix_32b
-[![Build Status](https://dev.azure.com/12719821/12719821/_apis/build/status/awesomebytes.ros_overlay_on_gentoo_prefix_32b)](https://dev.azure.com/12719821/12719821/_build/latest?definitionId=6)
+[![Build Status](https://dev.azure.com/12719821/12719821/_apis/build/status/awesomebytes.ros_overlay_on_gentoo_prefix_32b?branchName=melodic)](https://dev.azure.com/12719821/12719821/_build/latest?definitionId=6)
 
 Building ROS Melodic (ROS Melodic on [melodic branch](https://github.com/awesomebytes/ros_overlay_on_gentoo_prefix_32b/tree/melodic), check [master branch](https://github.com/awesomebytes/ros_overlay_on_gentoo_prefix_32b/tree/master) for ROS Kinetic) over Gentoo Prefix (on `/tmp/gentoo` for x86 over a Docker image of Ubuntu 16.04) thanks to [ros-overlay](https://github.com/ros/ros-overlay).
 
