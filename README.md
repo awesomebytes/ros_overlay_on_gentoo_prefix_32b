@@ -1,7 +1,7 @@
 # ros_overlay_on_gentoo_prefix_32b
 [![Build Status](https://dev.azure.com/12719821/12719821/_apis/build/status/awesomebytes.ros_overlay_on_gentoo_prefix_32b)](https://dev.azure.com/12719821/12719821/_build/latest?definitionId=6)
 
-Building ROS Kinetic (ROS Kinetic on [master branch](https://github.com/awesomebytes/ros_overlay_on_gentoo_prefix_32b/tree/melodic), check [melodic branch](https://github.com/awesomebytes/ros_overlay_on_gentoo_prefix_32b/tree/master) for ROS Melodic) over Gentoo Prefix (on `/tmp/gentoo` for x86 over a Docker image of Ubuntu 16.04) thanks to [ros-overlay](https://github.com/ros/ros-overlay).
+Building ROS Kinetic (ROS Kinetic on [master branch](https://github.com/awesomebytes/ros_overlay_on_gentoo_prefix_32b/tree/master), check [melodic branch](https://github.com/awesomebytes/ros_overlay_on_gentoo_prefix_32b/tree/melodic) for ROS Melodic) over Gentoo Prefix (on `/tmp/gentoo` for x86 over a Docker image of Ubuntu 16.04) thanks to [ros-overlay](https://github.com/ros/ros-overlay).
 
 This is a project closely related to [Gentoo Prefix CI 32b](https://github.com/awesomebytes/gentoo_prefix_ci_32b).
 
