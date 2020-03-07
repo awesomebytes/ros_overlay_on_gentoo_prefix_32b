@@ -36,6 +36,11 @@ RUN wget https://gist.githubusercontent.com/awesomebytes/0564296907ff82603376fce
 RUN mkdir -p $EPREFIX/etc/portage/patches/ros-melodic/tf-1.12.0 &&\
     wget https://gist.githubusercontent.com/awesomebytes/cee46d45d1314d8df4512ed577c55227/raw/4a5edd58e84a0fa010089da7bdf6caa934d6936d/boost_signals_tf_1.12.0.patch -O $EPREFIX/etc/portage/patches/ros-melodic/tf-1.12.0/boost_signals.patch &&\
     $PREFIXED emerge ros-melodic/tf
+# Meanwhile turtlesim is not available, https://github.com/ros/ros-overlay/pull/967 needs to be merged
+RUN wget https://raw.githubusercontent.com/ros/ros-overlay/e595d721a795958294ee34efd954478f6a329c77/ros-melodic/turtlesim/turtlesim-0.9.2-r1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/turtlesim/turtlesim-0.9.2-r1.ebuild &&\
+    $PREFIXED ebuild $EPREFIX/usr/local/portage/ros-melodic/turtlesim/turtlesim-0.9.2-r1.ebuild manifest &&\
+    $PREFIXED emerge ros-melodic/turtlesim
+
 
 # cv_bridge wants openCV 3, but we have 4 right now, so we need to downgrade
 # or do something like: https://github.com/MartinNievas/vision_opencv/pull/2/files
