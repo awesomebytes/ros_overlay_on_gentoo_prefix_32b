@@ -86,9 +86,9 @@ jobs:
     timeoutInMinutes: 0
     dependsOn: "build_ros_melodic_ros_base_2"
 
-    pool: magiclab
-    # pool:
-    #   vmImage: 'Ubuntu 16.04'
+    # pool: magiclab
+    pool:
+      vmImage: 'Ubuntu 16.04'
 
     variables:
       docker_image_name: roogp_32b_ros_melodic_ros_base_package_stage
