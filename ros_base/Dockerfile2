@@ -71,13 +71,6 @@ RUN echo ">=dev-lisp/sbcl-1.5.0" >> $EPREFIX/etc/portage/package.mask
 RUN unlink $EPREFIX/usr/bin/gm4 \
     && ln -s $EPREFIX/usr/bin/m4 $EPREFIX/usr/bin/gm4
 
-# Until https://github.com/ros/ros-overlay/pull/961/files is merged
-# So we have the Boost 1.71 patches
-RUN wget https://raw.githubusercontent.com/ros/ros-overlay/408919dae30544a5da85c23c8bb8e5d0cc2a7ad0/ros-melodic/roscpp/roscpp-1.14.4-r1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/roscpp/roscpp-1.14.4-r1.ebuild &&\
-    $PREFIXED ebuild $EPREFIX/usr/local/portage/ros-melodic/roscpp/roscpp-1.14.4-r1.ebuild manifest
-RUN wget https://raw.githubusercontent.com/ros/ros-overlay/408919dae30544a5da85c23c8bb8e5d0cc2a7ad0/ros-melodic/message_filters/message_filters-1.14.4-r1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/message_filters/message_filters-1.14.4-r1.ebuild &&\
-	$PREFIXED ebuild $EPREFIX/usr/local/portage/ros-melodic/message_filters/message_filters-1.14.4-r1.ebuild manifest
-
 # Until https://github.com/ros/ros-overlay/pull/965 is merged
 # We add manually the rospack ebuild without the double rosdep dependency
 RUN wget https://raw.githubusercontent.com/ros/ros-overlay/bb747eb5321c95b5dcd53715424b9fc1d20e97ac/ros-melodic/rospack/Manifest -O $EPREFIX/usr/local/portage/ros-melodic/rospack/Manifest &&\
