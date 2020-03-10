@@ -73,14 +73,14 @@ RUN unlink $EPREFIX/usr/bin/gm4 \
 
 # Until https://github.com/ros/ros-overlay/pull/965 is merged
 # We add manually the rospack ebuild without the double rosdep dependency
-RUN wget https://raw.githubusercontent.com/ros/ros-overlay/bb747eb5321c95b5dcd53715424b9fc1d20e97ac/ros-melodic/rospack/Manifest -O $EPREFIX/usr/local/portage/ros-melodic/rospack/Manifest &&\
-    wget https://raw.githubusercontent.com/ros/ros-overlay/bb747eb5321c95b5dcd53715424b9fc1d20e97ac/ros-melodic/rospack/rospack-2.5.5-r1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/rospack/rospack-2.5.5-r1.ebuild &&\
+RUN wget https://raw.githubusercontent.com/ros/ros-overlay/bb747eb5321c95b5dcd53715424b9fc1d20e97ac/ros-melodic/rospack/rospack-2.5.5-r1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/rospack/rospack-2.5.5-r1.ebuild &&\
+    $PREFIXED ebuild $EPREFIX/usr/local/portage/ros-melodic/rospack/rospack-2.5.5-r1.ebuild manifest &&\
     $PREFIXED emerge ros-melodic/rospack
 
 # Until https://github.com/ros/ros-overlay/issues/963  is solved
 # We add manually the ros-melodic/roslib ebuild
 RUN wget https://raw.githubusercontent.com/ros/ros-overlay/ae66b6fcaaf231fb1224ea4b2318fe7e6601988d/ros-melodic/roslib/roslib-1.14.7-r1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/roslib/roslib-1.14.7-r1.ebuild &&\
-    wget https://raw.githubusercontent.com/ros/ros-overlay/ae66b6fcaaf231fb1224ea4b2318fe7e6601988d/ros-melodic/roslib/Manifest -O $EPREFIX/usr/local/portage/ros-melodic/roslib/Manifest &&\
+    $PREFIXED ebuild  $EPREFIX/usr/local/portage/ros-melodic/roslib/roslib-1.14.7-r1.ebuild manifest &&\
     $PREFIXED emerge ros-melodic/roslib
 
 # Setup the basic ROS
