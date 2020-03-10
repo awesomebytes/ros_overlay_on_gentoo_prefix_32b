@@ -40,6 +40,10 @@ RUN mkdir -p $EPREFIX/etc/portage/patches/ros-melodic/tf-1.12.0 &&\
 RUN wget https://raw.githubusercontent.com/ros/ros-overlay/e595d721a795958294ee34efd954478f6a329c77/ros-melodic/turtlesim/turtlesim-0.9.2-r1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/turtlesim/turtlesim-0.9.2-r1.ebuild &&\
     $PREFIXED ebuild $EPREFIX/usr/local/portage/ros-melodic/turtlesim/turtlesim-0.9.2-r1.ebuild manifest &&\
     $PREFIXED emerge ros-melodic/turtlesim
+# Meanwhile roscpp_tutorials is not available (rosdistro key needs to be merged and package re-generated)
+RUN wget https://raw.githubusercontent.com/ros/ros-overlay/ae66b6fcaaf231fb1224ea4b2318fe7e6601988d/ros-melodic/roscpp_tutorials/roscpp_tutorials-0.9.1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/roscpp_tutorials/roscpp_tutorials-0.9.1.ebuild &&\
+    $PREFIXED ebuild $EPREFIX/usr/local/portage/ros-melodic/roscpp_tutorials/roscpp_tutorials-0.9.1.ebuild manifest &&\
+    $PREFIXED emerge ros-melodic/roscpp_tutorials
 
 
 # cv_bridge wants openCV 3, but we have 4 right now, so we need to downgrade
