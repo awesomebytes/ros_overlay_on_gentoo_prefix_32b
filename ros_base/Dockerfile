@@ -66,6 +66,14 @@ RUN cat $EPREFIX/etc/portage/make.conf
 # RUN $PREFIXED emerge dev-libs/openssl app-misc/ca-certificates net-misc/wget net-misc/curl
 RUN $PREFIXED update-ca-certificates
 
+# We got this on dev-libs/gobject-introspection, so we need to fix the softlink to gm4
+# It's surprising it happens here now, as it was happening in the next phase beforehand
+# 2020-03-09T13:29:38.1931278Z flex: fatal internal error, exec of /tmp/gentoo/usr/bin/gm4 failed
+# 2020-03-09T13:29:38.1931639Z ninja: build stopped: subcommand failed.
+# 2020-03-09T13:29:38.1953512Z  * ERROR: dev-libs/gobject-introspection-1.62.0::gentoo failed (compile phase):
+RUN unlink $EPREFIX/usr/bin/gm4 \
+    && ln -s $EPREFIX/usr/bin/m4 $EPREFIX/usr/bin/gm4
+
 # Emerging git
 RUN $PREFIXED emerge dev-vcs/git
 
