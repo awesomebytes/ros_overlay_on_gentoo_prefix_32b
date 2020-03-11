@@ -144,6 +144,7 @@ jobs:
         export RELEASE_NAME="Gentoo Prefix on /tmp/gentoo ROS Kinetic $(bundlename)"
         export BODY="Use ROS Kinetic on Gentoo Prefix with: cat ${RELEASE_FILE_NAME}.part-* > ${RELEASE_FILE_NAME}; tar xvf gentoo_on_tmp*.tar.gz; ./gentoo/startprefix"
         mv $HOME/gentoo_on_tmp.tar.gz ${RELEASE_FILE_NAME}
+        docker system prune -a -f
         split -b 1024MB -d ${RELEASE_FILE_NAME} ${RELEASE_FILE_NAME}.part-
         rm ${RELEASE_FILE_NAME}
         export PATH=$HOME/.local/bin:$PATH
@@ -325,6 +326,7 @@ jobs:
         export RELEASE_NAME="Gentoo Prefix on /tmp/gentoo with ROS Kinetic $(bundlename)"
         export BODY="Use ROS Kinetic on Gentoo Prefix with: cat ${RELEASE_FILE_NAME}.part-* > ${RELEASE_FILE_NAME}; tar xvf gentoo_on_tmp*.tar.gz; ./gentoo/startprefix"
         mv $HOME/gentoo_on_tmp.tar.gz ${RELEASE_FILE_NAME}
+        docker system prune -a -f
         split -b 1024MB -d ${RELEASE_FILE_NAME} ${RELEASE_FILE_NAME}.part-
         rm ${RELEASE_FILE_NAME}
         export PATH=$HOME/.local/bin:$PATH
