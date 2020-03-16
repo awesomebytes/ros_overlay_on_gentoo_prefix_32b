@@ -1,9 +1,17 @@
 # Pull ros-melodic/ros_base already emerged and the first part to emerge desktop
 FROM awesomebytes/roogp_32b_ros_melodic_desktop_1
 
-# cause of https://github.com/ros/ros-overlay/issues/725
-# Workaround cause of https://bugs.gentoo.org/704624 dev-python/PyQt5-5.14.0 doesn't emerge, go to previous
-# RUN echo ">=dev-python/PyQt5-5.13.2" >> $EPREFIX/etc/portage/package.mask
+# As of 16/03/20 dev-python/PyQt5[gui,widgets] wants a newer ruby
+# required by dev-ruby/rubygems-3.1.2::gentoo[ruby_targets_ruby27]
+# required by virtual/rubygems-16::gentoo[ruby_targets_ruby25]
+# required by dev-ruby/racc-1.4.16-r1::gentoo[-test,ruby_targets_ruby24]
+# required by dev-ruby/rdoc-6.2.0::gentoo[ruby_targets_ruby25]
+# required by dev-lang/ruby-2.7.0::gentoo[rdoc]
+# required by dev-qt/qtwebkit-5.212.0_pre20200309::gentoo
+# required by dev-python/PyQt5-5.14.1::gentoo[webkit]
+# required by dev-python/PyQt5[gui,widgets] (argument)
+RUN echo ">=virtual/ruby-ssl-11 ruby_targets_ruby27" >> $EPREFIX/etc/portage/package.use
+
 RUN $PREFIXED emerge dev-python/PyQt5[gui,widgets]
 RUN cd /tmp/gentoo/usr/bin && \
     unlink qmake && \
