@@ -161,14 +161,5 @@ RUN echo "# required by virtual/rubygems-16::gentoo[ruby_targets_ruby27]\n\
 # So we emerge it and then we patch the problem (an un-substituted symbol)
 RUN $PREFIXED emerge dev-qt/qtcore dev-qt/qtgui dev-qt/qttest dev-qt/qtconcurrent dev-qt/qtwidgets
 
-# gstreamer gets pulled by Qt at some point, while emerging ros-melodic/desktop
-# Meanwhile https://bugs.gentoo.org/705974 gets fixed upstream (make has a backward incompatible change)
-RUN mkdir -p $EPREFIX/etc/portage/patches/media-libs/gstreamer-1.14.5 &&\
-    wget https://705974.bugs.gentoo.org/attachment.cgi?id=604218 -O $EPREFIX/etc/portage/patches/media-libs/gstreamer-1.14.5/make-fix.patch
-RUN mkdir -p $EPREFIX/etc/portage/patches/media-libs/gst-plugins-bad-1.14.5 &&\
-    wget https://705974.bugs.gentoo.org/attachment.cgi?id=604222 -O $EPREFIX/etc/portage/patches/media-libs/gst-plugins-bad-1.14.5/make-fix.patch
-RUN mkdir -p $EPREFIX/etc/portage/patches/media-libs/gst-plugins-base-1.14.5 &&\
-    wget https://705974.bugs.gentoo.org/attachment.cgi?id=604220 -O $EPREFIX/etc/portage/patches/media-libs/gst-plugins-base-1.14.5/make-fix.patch
-
 
 ENTRYPOINT ["/bin/bash"]
