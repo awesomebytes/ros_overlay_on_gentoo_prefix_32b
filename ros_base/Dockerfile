@@ -152,10 +152,12 @@ RUN echo "# required by dev-python/rosdep-0.13.0::ros-overlay\n\
 # Higher versions of rospkg (out of ros-overlay) unsupport python2
 # ros-melodic/nodelet_topic_tools is the first to fail if rospkg is not in py2
 RUN echo ">=dev-python/rospkg-1.8" >> $EPREFIX/etc/portage/package.mask
-
 RUN echo ">=dev-python/rosdistro-9999 -python_targets_python3_6" >> $EPREFIX/etc/portage/package.use &&\
-    echo ">=dev-python/rosdep-0.13.0 -python_targets_python3_6" >> $EPREFIX/etc/portage/package.use &&\
-    echo "=dev-python/catkin_pkg-0.4.6 BSD-3" >> $EPREFIX/etc/portage/package.license
+    echo ">=dev-python/rosdep-0.13.0 -python_targets_python3_6" >> $EPREFIX/etc/portage/package.use
+# Meanwhile https://github.com/ros/ros-overlay/pull/975 is merged
+RUN cd $EPREFIX/usr/local/portage/dev-python/catkin_pkg &&\
+    rm * && wget https://raw.githubusercontent.com/ros/ros-overlay/86cb1c66c47f2b61334e30f8c90fb7f6975e2f99/dev-python/catkin_pkg/catkin_pkg-0.4.16.ebuild -O catkin_pkg-0.4.16.ebuild &&\
+    ebuild catkin_pkg-0.4.16.ebuild manifest
 RUN $PREFIXED emerge dev-python/rosdep ros-kinetic/catkin
 
 RUN echo "sys-libs/libcap -pam" >> $EPREFIX/etc/portage/package.use
