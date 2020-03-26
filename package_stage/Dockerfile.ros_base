@@ -1,6 +1,22 @@
 FROM awesomebytes/roogp_32b_ros_melodic_ros_base
 
+# TODO: create a startrosprefix script with ROS sourced
+# needs source /tmp/gentoo/opt/ros/kinetic/setup.bash
+# export CATKIN_PREFIX_PATH=/tmp/gentoo/opt/ros/kinetic
+# And ROS_IP and ROS_MASTER_URI decent defaults
+# Maybe warn once of export ROS_LANG_DISABLE=genlisp:geneus is useful
+# Also, from pepper_os we have:
+
+# if [[ $(ps aux | grep /tmp/gentoo/opt/ros/kinetic/bin/roscore | grep -v grep) ]]; then
+#     export ROS_MASTER_URI=`python -c "import rosgraph; print(rosgraph.Master('ip_checker').getUri())"`
+#     export ROS_IP=`python -c "import rosgraph; print(rosgraph.Master('ip_checker').getUri().replace('http://','').replace(':11311/',''))"`
+# else
+#     echo "No roscore found, setting ROS_MASTER_URI and ROS_IP to localhost defaults."
+#     export ROS_MASTER_URI=http://localhost:11311
+#     export ROS_IP=127.0.0.1
+# fi
+
 # Create the .tar.gz
-RUN tar cvzf /tmp/gentoo_on_tmp.tar.gz gentoo
+# RUN tar cvzf /tmp/gentoo_on_tmp.tar.gz gentoo
 
 ENTRYPOINT ["/bin/bash"]

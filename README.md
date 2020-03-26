@@ -46,9 +46,9 @@ Go to https://github.com/awesomebytes/ros_overlay_on_gentoo_prefix/releases and 
 Put the parts together and extract (4.4GB~):
 ```bash
 # Put the .part-XX files together
-cat gentoo_on_tmp* > gentoo_on_tmp.tar.gz
+cat gentoo_on_tmp* > gentoo_on_tmp.tar.lzma
 # Extract the 'gentoo' folder that contains the OS
-tar xvf gentoo_on_tmp.tar.gz
+tar xvf gentoo_on_tmp.tar.lzma
 # Probably delete the intermediate files
 rm gentoo_on_tmp*
 # Just enter the Gentoo Prefix environment
