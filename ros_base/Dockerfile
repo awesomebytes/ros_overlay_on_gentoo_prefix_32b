@@ -36,7 +36,7 @@ RUN cat /proc/cpuinfo; cat /proc/meminfo; df -h
 # This command will visit the latest release page and will look for the url of the artifact to download and download it
 RUN aria2c -x 10 http://github.com`curl -s -L https://github.com/awesomebytes/gentoo_prefix_ci_32b/releases/latest | grep "download/release" | cut -d '"' -f2`
 
-RUN tar xvf gentoo_on_tmp-*.tar.gz; rm gentoo_on_tmp-*.tar.gz
+RUN tar xvf gentoo_on_tmp-*.tar.*; rm gentoo_on_tmp-*.tar.*
 
 # Make sure it works
 RUN bash gentoo/executeonprefix emerge --version
