@@ -1,6 +1,6 @@
 FROM awesomebytes/roogp_32b_ros_kinetic_desktop_3
 
 # Create the .tar.gz
-RUN tar cvzf /tmp/gentoo_on_tmp.tar.gz gentoo
+# RUN tar cvzf /tmp/gentoo_on_tmp.tar.gz gentoo
 
 ENTRYPOINT ["/bin/bash"]
