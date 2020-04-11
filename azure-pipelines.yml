@@ -124,7 +124,13 @@ jobs:
       displayName: 'push latest to DockerHub'
       # condition: always()
 
-    - script: docker run --entrypoint /tmp/gentoo/executeonprefix $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)  "tar -c --lzma -f - -C /tmp gentoo" > ~/gentoo_on_tmp.tar.lzma
+    # As we run into HD space problems (only 10GB available
+    # and the docker image is already 4.0GB compressed, so on a container
+    # it is twice as big...) we have 7GB RAM available
+    - script: sudo mkdir /mnt/ramdisk && sudo mount -t tmpfs -o rw,size=5G tmpfs /mnt/ramdisk
+      displayName: 'create RAM disk for output'
+
+    - script: docker run --rm --entrypoint /tmp/gentoo/executeonprefix $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)  "tar -c --lzma -f - -C /tmp gentoo" > /mnt/ramdisk/gentoo_on_tmp.tar.lzma; ls -lah /mnt/ramdisk
       displayName: 'Create .tar.lzma of /tmp/gentoo'
 
     # # Create a temporal container to copy the gentoo_on_tmp.tar.gz
@@ -148,9 +154,10 @@ jobs:
         export RELEASE_FILE_NAME=gentoo_on_tmp_with_$(rosdistro)_$(bundlename)-${PLATFORM}_${DATE}.tar.lzma
         export RELEASE_NAME="Gentoo Prefix on /tmp/gentoo ROS Kinetic $(bundlename)"
         export BODY="Use ROS Kinetic on Gentoo Prefix with: cat ${RELEASE_FILE_NAME}.part-* > ${RELEASE_FILE_NAME}; tar xvf gentoo_on_tmp*.tar.lzma; ./gentoo/startprefix"
-        mv $HOME/gentoo_on_tmp.tar.lzma ${RELEASE_FILE_NAME}
         docker system prune -a -f
-        split -b 1024MB -d ${RELEASE_FILE_NAME} ${RELEASE_FILE_NAME}.part-
+        mv /mnt/ramdisk/gentoo_on_tmp.tar.lzma $HOME/${RELEASE_FILE_NAME}
+        cd $HOME
+        split -b 1536MB -d ${RELEASE_FILE_NAME} ${RELEASE_FILE_NAME}.part-
         rm ${RELEASE_FILE_NAME}
         export PATH=$HOME/.local/bin:$PATH
         export PYTHONPATH=$HOME/.local/lib/python2.7/site-packages:$PYTHONPATH
