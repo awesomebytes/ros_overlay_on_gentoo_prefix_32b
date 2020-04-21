@@ -121,7 +121,8 @@ RUN $PREFIXED emerge python:2.7 python:3.6
 # Also enable PGO and LTO optimizations
 RUN echo "dev-lang/python sqlite bluetooth readline" >> $EPREFIX/etc/portage/package.use
 # To build succesfully the bluetooth support
-RUN echo "net-wireless/bluez -udev" >> $EPREFIX/etc/portage/package.use
+RUN echo "net-wireless/bluez -udev" >> $EPREFIX/etc/portage/package.use &&\
+    echo ">=dev-libs/libxml2-2.9.9-r3 python" >> $EPREFIX/etc/portage/package.use
 RUN EXTRA_ECONF="--enable-optimizations --with-lto" $PREFIXED emerge python:2.7[sqlite,bluetooth,readline] python:3.6[sqlite,bluetooth,readline]
 
 # By default it's python3 (option 1) but ROS uses Python 2.7 (as of now)
