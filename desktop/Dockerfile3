@@ -53,6 +53,10 @@ RUN echo ">media-libs/opencv-4" >> $EPREFIX/etc/portage/package.mask &&\
     $PREFIXED emerge media-libs/opencv
 
 
+# Patch meanwhile https://github.com/ros/ros-overlay/issues/980 gets resolved
+RUN rm $EPREFIX/usr/local/portage/ros-melodic/rviz/Manifest &&\
+    $PREFIXED ebuild $EPREFIX/usr/local/portage/ros-melodic/rviz/rviz-1.13.9.ebuild manifest
+
 # Setup desktop (237 packages)
 RUN $PREFIXED emerge ros-melodic/desktop || true
 
