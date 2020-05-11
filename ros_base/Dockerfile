@@ -206,6 +206,11 @@ RUN echo "# required by ros-melodic/cpp_common-0.6.11::ros-overlay\n\
 # required by ros-melodic/ros_base (argument)\n\
 =dev-libs/console_bridge-9999 **" >> $EPREFIX/etc/portage/package.accept_keywords
 
+# Latest boost has an issue https://github.com/ros/ros-overlay/issues/986
+# So we mask it for now so we can build roscpp
+RUN echo ">=dev-libs/boost-1.73.0" >> $EPREFIX/etc/portage/package.mask
+
+
 # Emerge llvm already, as it takes 2h30 already, so we can
 # debug the next step (where we really emerge ros_base) easier and faster
 RUN $PREFIXED emerge sys-devel/llvm
