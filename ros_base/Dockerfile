@@ -127,7 +127,7 @@ RUN EXTRA_ECONF="--enable-optimizations --with-lto" $PREFIXED emerge python:2.7[
 
 # By default it's python3.7 (option 1) but ROS uses Python 2.7 (as of now)
 # Choosing Python 2.7
-RUN $PREFIXED eselect python set 2
+RUN $PREFIXED eselect python list && $PREFIXED eselect python set 3
 
 # Only emerge for Python 2.7
 # Because of errors like:
