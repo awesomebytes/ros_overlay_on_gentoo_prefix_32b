@@ -127,7 +127,7 @@ RUN EXTRA_ECONF="--enable-optimizations --with-lto" $PREFIXED emerge python:2.7[
 
 # By default it's python3 (option 1) but ROS uses Python 2.7 (as of now)
 # Choosing Python 2.7
-RUN $PREFIXED eselect python set 2
+RUN #PREFIXED eselect python list && $PREFIXED eselect python set 3
 
 # Only emerge for Python 2.7
 # Because of errors like:
@@ -164,9 +164,10 @@ RUN echo "# required by dev-python/rosdep-0.13.0::ros-overlay\n\
 # Higher versions of rospkg (out of ros-overlay) unsupport python2
 # ros-melodic/nodelet_topic_tools is the first to fail if rospkg is not in py2
 RUN echo ">=dev-python/rospkg-1.8" >> $EPREFIX/etc/portage/package.mask
+RUN echo ">dev-python/catkin_pkg-0.4.16" >> $EPREFIX/etc/portage/package.mask
 RUN echo ">=dev-python/rosdistro-9999 -python_targets_python3_5 -python_targets_python3_6  -python_targets_python3_7" >> $EPREFIX/etc/portage/package.use &&\
     echo ">=dev-python/rosdep-0.13.0 -python_targets_python3_5 -python_targets_python3_6  -python_targets_python3_7" >> $EPREFIX/etc/portage/package.use &&\
-    echo ">=dev-python/catkin_pkg-0.4.20 -python_targets_python3_5 -python_targets_python3_6  -python_targets_python3_7" >> $EPREFIX/etc/portage/package.use
+    echo ">=dev-python/catkin_pkg-0.4.16 -python_targets_python3_5 -python_targets_python3_6  -python_targets_python3_7" >> $EPREFIX/etc/portage/package.use
 RUN $PREFIXED emerge dev-python/rosdep ros-melodic/catkin
 
 RUN echo "sys-libs/libcap -pam" >> $EPREFIX/etc/portage/package.use
