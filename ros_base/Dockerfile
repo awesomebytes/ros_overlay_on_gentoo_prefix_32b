@@ -136,6 +136,8 @@ RUN echo "# From the Docker image of ros-overlay\n\
 # mainly force to build just Python 2.7\n\
 ros-indigo/* PYTHON_TARGETS: -* python2_7\n\
 ros-indigo/* PYTHON_SINGLE_TARGET: -* python2_7\n\
+ros-kinetic/* PYTHON_TARGETS: -* python2_7\n\
+ros-kinetic/* PYTHON_SINGLE_TARGET: -* python2_7\n\
 ros-melodic/* PYTHON_TARGETS: -* python2_7\n\
 ros-melodic/* PYTHON_SINGLE_TARGET: -* python2_7\n\
 ros-lunar/* PYTHON_TARGETS: -* python2_7\n\
