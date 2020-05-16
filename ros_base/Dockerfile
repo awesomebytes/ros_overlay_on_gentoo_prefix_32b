@@ -169,8 +169,9 @@ RUN echo ">=dev-python/rospkg-1.8" >> $EPREFIX/etc/portage/package.mask
 RUN echo ">dev-python/catkin_pkg-0.4.16" >> $EPREFIX/etc/portage/package.mask
 RUN echo ">=dev-python/rosdistro-9999 -python_targets_python3_5 -python_targets_python3_6  -python_targets_python3_7" >> $EPREFIX/etc/portage/package.use &&\
     echo ">=dev-python/rosdep-0.13.0 -python_targets_python3_5 -python_targets_python3_6  -python_targets_python3_7" >> $EPREFIX/etc/portage/package.use &&\
-    echo ">=dev-python/catkin_pkg-0.4.16 -python_targets_python3_5 -python_targets_python3_6  -python_targets_python3_7" >> $EPREFIX/etc/portage/package.use
-RUN $PREFIXED emerge dev-python/rosdep ros-melodic/catkin
+    echo ">=dev-python/catkin_pkg-0.4.16 -python_targets_python3_5 -python_targets_python3_6  -python_targets_python3_7" >> $EPREFIX/etc/portage/package.use &&\
+    echo "ros-kinetic/catkin -python_targets_python3_5 -python_targets_python3_6  -python_targets_python3_7" >> $EPREFIX/etc/portage/package.use
+RUN $PREFIXED emerge dev-python/rosdep ros-kinetic/catkin
 
 RUN echo "sys-libs/libcap -pam" >> $EPREFIX/etc/portage/package.use
 
