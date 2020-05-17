@@ -28,34 +28,12 @@ RUN echo ">dev-python/numpy-1.17" >> $EPREFIX/etc/portage/package.mask && \
 
 RUN $PREFIXED emerge ros-melodic/python_qt_binding
 
-# Meanwhile tf2 is not correctly regenerated in ros-overlay to 0.6.6-1
-RUN wget https://gist.githubusercontent.com/awesomebytes/0564296907ff82603376fcecca60d3d3/raw/b5285a1f65b96c29e4ebb9ad46ae551b0818d543/tf2-0.6.6-1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/tf2/tf2-0.6.6-r1.ebuild &&\
-    $PREFIXED ebuild $EPREFIX/usr/local/portage/ros-melodic/tf2/tf2-0.6.6-r1.ebuild manifest &&\
-    $PREFIXED emerge ros-melodic/tf2
-# Meanwhile a version newer than tf-1.12.0 is not released (for the boost patch)
-RUN mkdir -p $EPREFIX/etc/portage/patches/ros-melodic/tf-1.12.0 &&\
-    wget https://gist.githubusercontent.com/awesomebytes/cee46d45d1314d8df4512ed577c55227/raw/4a5edd58e84a0fa010089da7bdf6caa934d6936d/boost_signals_tf_1.12.0.patch -O $EPREFIX/etc/portage/patches/ros-melodic/tf-1.12.0/boost_signals.patch &&\
-    $PREFIXED emerge ros-melodic/tf
-# Meanwhile turtlesim is not available, https://github.com/ros/ros-overlay/pull/967 needs to be merged
-RUN wget https://raw.githubusercontent.com/ros/ros-overlay/e595d721a795958294ee34efd954478f6a329c77/ros-melodic/turtlesim/turtlesim-0.9.2-r1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/turtlesim/turtlesim-0.9.2-r1.ebuild &&\
-    $PREFIXED ebuild $EPREFIX/usr/local/portage/ros-melodic/turtlesim/turtlesim-0.9.2-r1.ebuild manifest &&\
-    $PREFIXED emerge ros-melodic/turtlesim
-# Meanwhile roscpp_tutorials is not available (rosdistro key needs to be merged and package re-generated)
-RUN wget https://raw.githubusercontent.com/ros/ros-overlay/ae66b6fcaaf231fb1224ea4b2318fe7e6601988d/ros-melodic/roscpp_tutorials/roscpp_tutorials-0.9.1.ebuild -O $EPREFIX/usr/local/portage/ros-melodic/roscpp_tutorials/roscpp_tutorials-0.9.1.ebuild &&\
-    $PREFIXED ebuild $EPREFIX/usr/local/portage/ros-melodic/roscpp_tutorials/roscpp_tutorials-0.9.1.ebuild manifest &&\
-    $PREFIXED emerge ros-melodic/roscpp_tutorials
-
-
 # cv_bridge wants openCV 3, but we have 4 right now, so we need to downgrade
 # or do something like: https://github.com/MartinNievas/vision_opencv/pull/2/files
 # to allow OpenCV4, but I'll leave that as a future work
 RUN echo ">media-libs/opencv-4" >> $EPREFIX/etc/portage/package.mask &&\
     $PREFIXED emerge media-libs/opencv
 
-
-# Patch meanwhile https://github.com/ros/ros-overlay/issues/980 gets resolved
-RUN rm $EPREFIX/usr/local/portage/ros-melodic/rviz/Manifest &&\
-    $PREFIXED ebuild $EPREFIX/usr/local/portage/ros-melodic/rviz/rviz-1.13.9.ebuild manifest
 
 # Setup desktop (237 packages)
 RUN $PREFIXED emerge ros-melodic/desktop || true
