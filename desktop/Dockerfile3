@@ -29,7 +29,15 @@ RUN echo ">dev-python/numpy-1.17" >> $EPREFIX/etc/portage/package.mask && \
 RUN $PREFIXED emerge ros-kinetic/python_qt_binding
 
 # Meanwhile https://bugs.gentoo.org/723460 gets fixed
-RUN $PREFIXED emerge media-libs/glew dev-libs/pugixml
+# RUN $PREFIXED emerge media-libs/glew dev-libs/pugixml
+# Apparently ros-kinetic/opencv3 is version 3.3.1-r5 and gives:
+# error: 'class vtkPolyDataMapper' has no member named 'ImmediateModeRenderingOff'
+# If using vtk>=8.2. And as re-packaging opencv3 to use a more recent tarball
+# as instructed here http://wiki.ros.org/opencv3
+# is a pain, for now, lets use 8.1 meanwhile it lasts
+RUN echo ">=sci-libs/vtk-8.2.0" >> $EPREFIX/etc/portage/package.mask &&\
+    $PREFIXED emerge sci-libs/vtk
+
 
 # Setup desktop (237 packages)
 RUN $PREFIXED emerge ros-kinetic/desktop || true
