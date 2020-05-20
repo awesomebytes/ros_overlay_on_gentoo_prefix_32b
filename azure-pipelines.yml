@@ -127,7 +127,7 @@ jobs:
     # As we run into HD space problems (only 10GB available
     # and the docker image is already 4.0GB compressed, so on a container
     # it is twice as big...) we have 7GB RAM available
-    - script: sudo mkdir /mnt/ramdisk && sudo mount -t tmpfs -o rw,size=5G tmpfs /mnt/ramdisk
+    - script: sudo mkdir /mnt/ramdisk && sudo mount -t tmpfs -o rw,size=6G tmpfs /mnt/ramdisk
       displayName: 'create RAM disk for output'
 
     - script: docker run --rm --entrypoint /tmp/gentoo/executeonprefix $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)  "tar -c --lzma -f - -C /tmp gentoo" > /mnt/ramdisk/gentoo_on_tmp.tar.lzma; ls -lah /mnt/ramdisk
