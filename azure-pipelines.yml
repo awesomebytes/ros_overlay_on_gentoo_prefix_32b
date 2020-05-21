@@ -155,10 +155,9 @@ jobs:
         export RELEASE_NAME="Gentoo Prefix on /tmp/gentoo ROS Melodic $(bundlename)"
         export BODY="Use ROS Melodic on Gentoo Prefix with: cat ${RELEASE_FILE_NAME}.part-* > ${RELEASE_FILE_NAME}; tar xvf gentoo_on_tmp*.tar.lzma; ./gentoo/startprefix"
         docker system prune -a -f
-        mv /mnt/ramdisk/gentoo_on_tmp.tar.lzma $HOME/${RELEASE_FILE_NAME}
         cd $HOME
-        split -b 1536MB -d ${RELEASE_FILE_NAME} ${RELEASE_FILE_NAME}.part-
-        rm ${RELEASE_FILE_NAME}
+        split -b 1536MB -d /mnt/ramdisk/gentoo_on_tmp.tar.lzma ${RELEASE_FILE_NAME}.part-
+        rm /mnt/ramdisk/gentoo_on_tmp.tar.lzma
         export PATH=$HOME/.local/bin:$PATH
         export PYTHONPATH=$HOME/.local/lib/python2.7/site-packages:$PYTHONPATH
         githubrelease --github-token $(GitHub_Token) release $(Build.Repository.Name) create "${RELEASE_TAG}" --publish --name "${RELEASE_NAME}" --body "${BODY}" "${RELEASE_FILE_NAME}.part-*"
@@ -321,7 +320,7 @@ jobs:
     # As we run into HD space problems (only 10GB available
     # and the docker image is already 4.0GB compressed, so on a container
     # it is twice as big...) we have 7GB RAM available
-    - script: sudo mkdir /mnt/ramdisk && sudo mount -t tmpfs -o rw,size=5G tmpfs /mnt/ramdisk
+    - script: sudo mkdir /mnt/ramdisk && sudo mount -t tmpfs -o rw,size=6G tmpfs /mnt/ramdisk
       displayName: 'create RAM disk for output'
 
     - script: docker run --rm --entrypoint /tmp/gentoo/executeonprefix $(DockerHub_user)/$(docker_image_name):$(Build.BuildId)  "tar -c --lzma -f - -C /tmp gentoo" > /mnt/ramdisk/gentoo_on_tmp.tar.lzma; ls -lah /mnt/ramdisk
@@ -349,10 +348,9 @@ jobs:
         export RELEASE_NAME="Gentoo Prefix on /tmp/gentoo with ROS Melodic $(bundlename)"
         export BODY="Use ROS Melodic on Gentoo Prefix with: cat ${RELEASE_FILE_NAME}.part-* > ${RELEASE_FILE_NAME}; tar xvf gentoo_on_tmp*.tar.lzma; ./gentoo/startprefix"
         docker system prune -a -f
-        mv /mnt/ramdisk/gentoo_on_tmp.tar.lzma $HOME/${RELEASE_FILE_NAME}
         cd $HOME
-        split -b 1536MB -d ${RELEASE_FILE_NAME} ${RELEASE_FILE_NAME}.part-
-        rm ${RELEASE_FILE_NAME}
+        split -b 1536MB -d /mnt/ramdisk/gentoo_on_tmp.tar.lzma ${RELEASE_FILE_NAME}.part-
+        rm /mnt/ramdisk/gentoo_on_tmp.tar.lzma
         export PATH=$HOME/.local/bin:$PATH
         export PYTHONPATH=$HOME/.local/lib/python2.7/site-packages:$PYTHONPATH
         githubrelease --github-token $(GitHub_Token) release $(Build.Repository.Name) create "${RELEASE_TAG}" --publish --name "${RELEASE_NAME}" --body "${BODY}" "${RELEASE_FILE_NAME}.part-*"
