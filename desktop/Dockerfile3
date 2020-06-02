@@ -35,7 +35,12 @@ RUN $PREFIXED emerge ros-kinetic/python_qt_binding
 # If using vtk>=8.2. And as re-packaging opencv3 to use a more recent tarball
 # as instructed here http://wiki.ros.org/opencv3
 # is a pain, for now, lets use 8.1 meanwhile it lasts
+# Additionally, https://bugs.gentoo.org/726676 this bug breaks sci-libs/vtk-8.1.0-r7
+# So we need to apply a patch before emerging sci-libs/vtk-8.1.0-r7
 RUN echo ">=sci-libs/vtk-8.2.0" >> $EPREFIX/etc/portage/package.mask &&\
+    mkdir -p $EPREFIX/etc/portage/patches/sci-libs/vtk-8.1.0-r7 &&\
+    cd $EPREFIX/etc/portage/patches/sci-libs/vtk-8.1.0-r7 &&\
+    wget https://726676.bugs.gentoo.org/attachment.cgi?id=643060 -O qpath.patch &&\
     $PREFIXED emerge sci-libs/vtk
 
 
