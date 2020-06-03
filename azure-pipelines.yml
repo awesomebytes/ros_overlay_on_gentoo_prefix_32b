@@ -334,7 +334,7 @@ jobs:
     # Not really needed
     # - script: docker rm -v $id
     # Make a release
-    - script: py3thon -m pip install --upgrade pip setuptools wheel
+    - script: python3 -m pip install --upgrade pip setuptools wheel
       displayName: 'Install tools'
     # For the magiclab pool
     # - script: python -m pip install --user setuptools wheel
