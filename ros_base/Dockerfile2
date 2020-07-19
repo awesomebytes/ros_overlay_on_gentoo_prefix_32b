@@ -61,7 +61,7 @@ RUN echo "# required by dev-python/wxpython-3.0.2.0::gentoo\n\
 # //Options: --prefix='/tmp/gentoo/usr' --xc-host='sh /home/user/gentoo/var/tmp/portage/dev-lisp/sbcl-1.5.8/work/sbcl-binary/run-sbcl.sh --no-sysinit --no-userinit --disable-debugger'
 # /home/user/gentoo/var/tmp/portage/dev-lisp/sbcl-1.5.8/work/sbcl-binary/src/runtime/sbcl: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.28' not found (required by /home/user/gentoo/var/tmp/portage/dev-lisp/sbcl-1.5.8/work/sbcl-binary/src/runtime/sbcl)
 # So we revert to stable version
-RUN echo ">=dev-lisp/sbcl-1.5.0" >> $EPREFIX/etc/portage/package.mask
+# RUN echo ">=dev-lisp/sbcl-1.5.0" >> $EPREFIX/etc/portage/package.mask
 
 # Got this... so, obeying:
 # The following USE changes are necessary to proceed:
@@ -84,7 +84,9 @@ RUN unlink $EPREFIX/usr/bin/gm4 \
     && ln -s $EPREFIX/usr/bin/m4 $EPREFIX/usr/bin/gm4
 
 # Setup the basic ROS
-RUN $PREFIXED emerge ros-kinetic/ros_base || true
+# Note that this forced linu32 is here to allow dev-lisp/sbcl (2.0.5) to build. It should not be needed
+# given $PREFIXED already does linux32 as its base... but whatever, it works.
+RUN $PREFIXED linux32 emerge ros-melodic/ros_base || true
 # Apparently dev-lisp/sbcl-1.4.13 sometimes may fail in some of the tests
 # given the machine is too stressed
 # SB-CONCURRENCY-TEST::MAILBOX.INTERRUPTS-SAFETY.1.
